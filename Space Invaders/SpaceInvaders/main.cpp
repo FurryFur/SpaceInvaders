@@ -8,7 +8,7 @@
 //
 // File Name	: 
 // Description	: 
-// Author		: Your Name
+// Author		: Sebastian Tengdahl, Lance Chaney
 // Mail			: your.name@mediadesign.school.nz
 //
 
