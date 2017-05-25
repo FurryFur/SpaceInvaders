@@ -112,7 +112,12 @@
     <ResourceCompile Include="Breakout.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="D:\Users\sebastian.ten7230\Desktop\Ghost looking alien.bmp" />
+    <Image Include="D:\Users\sebastian.ten7230\Desktop\Jellyfish looking alien.bmp" />
+    <Image Include="D:\Users\sebastian.ten7230\Desktop\Saucer looking saucer.bmp" />
+    <Image Include="D:\Users\sebastian.ten7230\Desktop\Spider looking alien.bmp" />
     <Image Include="Sprites\Background.bmp" />
+    <Image Include="Sprites\BackgroundMask.bmp" />
     <Image Include="Sprites\BallMask.bmp" />
     <Image Include="Sprites\BallSprite.bmp" />
     <Image Include="Sprites\BrickMask.bmp" />
