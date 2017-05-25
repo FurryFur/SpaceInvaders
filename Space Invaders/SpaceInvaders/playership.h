@@ -42,6 +42,7 @@ public:
 
 
 protected:
+	float m_fFireRate = 1; // Per Second
 
 private:
     CPlayerShip(const CPlayerShip& _kr);

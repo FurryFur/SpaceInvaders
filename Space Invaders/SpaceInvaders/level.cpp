@@ -13,6 +13,7 @@
 //
 
 // Library Includes
+#include <algorithm>
 
 // Local Includes
 #include "Game.h"
@@ -38,7 +39,7 @@
 CLevel::CLevel()
 : m_iAliensRemaining(0)
 , m_pPlayerShip(0)
-, m_pBullet(0)
+, m_listpBullets(0)
 , m_iWidth(0)
 , m_iHeight(0)
 , m_fpsCounter(0)
@@ -60,8 +61,11 @@ CLevel::~CLevel()
     delete m_pPlayerShip;
     m_pPlayerShip = 0;
 
-    delete m_pBullet;
-    m_pBullet = 0;
+	for (CBullet* pBullet : m_listpBullets)
+	{
+		delete pBullet;
+	}
+    m_listpBullets.clear();
 
 	delete m_fpsCounter;
 	m_fpsCounter = 0;
@@ -85,9 +89,6 @@ CLevel::Initialise(int _iWidth, int _iHeight)
 	//Set the background position to start from {0,0}
 	m_pBackground->SetX((float)m_iWidth / 2);
 	m_pBackground->SetY((float)m_iHeight / 2);
-
-	m_pBullet = new CBullet();
-    VALIDATE(m_pBullet->Initialise(m_iWidth / 2.0f, m_iHeight / 2.0f, fBulletVelX, fBulletVelY));
 
     m_pPlayerShip = new CPlayerShip();
     VALIDATE(m_pPlayerShip->Initialise());
@@ -140,7 +141,10 @@ CLevel::Draw()
     }
 
     m_pPlayerShip->Draw();
-    m_pBullet->Draw();
+	for (CBullet* pBullet : m_listpBullets)
+	{
+		pBullet->Draw();
+	}
 
     DrawScore();
 	DrawFPS();
@@ -150,10 +154,11 @@ void
 CLevel::Process(float _fDeltaTick)
 {
 	m_pBackground->Process(_fDeltaTick);
-	m_pBullet->Process(_fDeltaTick);
+	for (CBullet* pBullet : m_listpBullets)
+	{
+		pBullet->Process(_fDeltaTick);
+	}
 	m_pPlayerShip->Process(_fDeltaTick);
-	ProcessBulletWallCollision();
-	//ProcessPlayerShipWallCollison();
     ProcessBulletPlayerShipCollision();
     ProcessBulletAlienCollision();
 
@@ -164,7 +169,8 @@ CLevel::Process(float _fDeltaTick)
     {
         m_vecAliens[i]->Process(_fDeltaTick);
     }
-	
+
+	ProcessDestroyedEntites();
    
     
 	m_fpsCounter->CountFramesPerSecond(_fDeltaTick);
@@ -176,98 +182,97 @@ CLevel::GetPlayerShip() const
     return (m_pPlayerShip);
 }
 
-void 
-CLevel::ProcessBulletWallCollision()
-{
-    float fBulletX = m_pBullet->GetX();
-    float fBulletY = m_pBullet->GetY();
-    float fBulletW = m_pBullet->GetWidth();
-    float fBulletH = m_pBullet->GetHeight();
-
-    float fHalfBulletW = fBulletW / 2;
-	float fHalfBulletH = fBulletH / 2;
-
-    if (fBulletX < fHalfBulletW) //represents the situation when the Bullet has hit the left wall
-    {
-        m_pBullet->SetVelocityX(m_pBullet->GetVelocityX() * -1); //reverse the Bullet's x velocity
-    }
-    else if (fBulletX > m_iWidth - fHalfBulletW) //represents the situation when the Bullet has hit the right wall
-    {
-        m_pBullet->SetVelocityX(m_pBullet->GetVelocityX() * -1); //reverse the Bullet's x velocity direction
-    }
-
-	if (fBulletY < fHalfBulletH) //represents the situation when the Bullet has hit the top wall
-    {
-        m_pBullet->SetVelocityY(m_pBullet->GetVelocityY() * -1); //reverse the Bullet's y velocity
-    }
-
-#ifdef CHEAT_BOUNCE_ON_BACK_WALL
-	if (fBulletY  > m_iHeight - fHalfBulletH)  //represents the situation when the Bullet has hit the bottom wall
-    {
-        m_pBullet->SetVelocityY(m_pBullet->GetVelocityY() * -1); //reverse the Bullet's y velocity
-    }
-#endif //CHEAT_BOUNCE_ON_BACK_WALL
-}
-
-
-
-
 void
 CLevel::ProcessBulletPlayerShipCollision()
 {
-    float fBulletR = m_pBullet->GetRadius();
+	for (CBullet* pBullet : m_listpBullets)
+	{
+		float fBulletR = pBullet->GetRadius();
 
-    float fBulletX = m_pBullet->GetX();
-    float fBulletY = m_pBullet->GetY(); 
+		float fBulletX = pBullet->GetX();
+		float fBulletY = pBullet->GetY();
 
-    float fPlayerShipX = m_pPlayerShip->GetX();
-    float fPlayerShipY = m_pPlayerShip->GetY();
+		float fPlayerShipX = m_pPlayerShip->GetX();
+		float fPlayerShipY = m_pPlayerShip->GetY();
 
-    float fPlayerShipH = m_pPlayerShip->GetHeight();
-    float fPlayerShipW = m_pPlayerShip->GetWidth();
+		float fPlayerShipH = m_pPlayerShip->GetHeight();
+		float fPlayerShipW = m_pPlayerShip->GetWidth();
 
-    if ((fBulletX + fBulletR > fPlayerShipX - fPlayerShipW / 2) && //Bullet.right > PlayerShip.left
-        (fBulletX - fBulletR < fPlayerShipX + fPlayerShipW / 2) && //Bullet.left < PlayerShip.right
-        (fBulletY + fBulletR > fPlayerShipY - fPlayerShipH / 2) && //Bullet.bottom > PlayerShip.top
-        (fBulletY - fBulletR < fPlayerShipY + fPlayerShipH / 2))  //Bullet.top < PlayerShip.bottom
-    {
-        m_pBullet->SetY((fPlayerShipY - fPlayerShipH / 2) - fBulletR);  //Set the Bullet.bottom = PlayerShip.top; to prevent the Bullet from going through the PlayerShip!
-        m_pBullet->SetVelocityY(m_pBullet->GetVelocityY() * -1); //Reverse Bullet's Y direction
-    }
+		if ((fBulletX + fBulletR > fPlayerShipX - fPlayerShipW / 2) && //Bullet.right > PlayerShip.left
+			(fBulletX - fBulletR < fPlayerShipX + fPlayerShipW / 2) && //Bullet.left < PlayerShip.right
+			(fBulletY + fBulletR > fPlayerShipY - fPlayerShipH / 2) && //Bullet.bottom > PlayerShip.top
+			(fBulletY - fBulletR < fPlayerShipY + fPlayerShipH / 2))  //Bullet.top < PlayerShip.bottom
+		{
+			pBullet->SetY((fPlayerShipY - fPlayerShipH / 2) - fBulletR);  //Set the Bullet.bottom = PlayerShip.top; to prevent the Bullet from going through the PlayerShip!
+			pBullet->SetVelocityY(pBullet->GetVelocityY() * -1); //Reverse Bullet's Y direction
+		}
+	}
 }
 
 void
 CLevel::ProcessBulletAlienCollision()
 {
-    for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
-    {
-        if (!m_vecAliens[i]->IsHit())
-        {
-            float fBulletR = m_pBullet->GetRadius();
+	for (CBullet* pBullet : m_listpBullets)
+	{
+		for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
+		{
+			if (!m_vecAliens[i]->IsHit())
+			{
+				float fBulletR = pBullet->GetRadius();
 
-            float fBulletX = m_pBullet->GetX();
-            float fBulletY = m_pBullet->GetY(); 
+				float fBulletX = pBullet->GetX();
+				float fBulletY = pBullet->GetY();
 
-            float fAlienX = m_vecAliens[i]->GetX();
-            float fAlienY = m_vecAliens[i]->GetY();
+				float fAlienX = m_vecAliens[i]->GetX();
+				float fAlienY = m_vecAliens[i]->GetY();
 
-            float fAlienH = m_vecAliens[i]->GetHeight();
-            float fAlienW = m_vecAliens[i]->GetWidth();
+				float fAlienH = m_vecAliens[i]->GetHeight();
+				float fAlienW = m_vecAliens[i]->GetWidth();
 
-            if ((fBulletX + fBulletR > fAlienX - fAlienW / 2) &&
-                (fBulletX - fBulletR < fAlienX + fAlienW / 2) &&
-                (fBulletY + fBulletR > fAlienY - fAlienH / 2) &&
-                (fBulletY - fBulletR < fAlienY + fAlienH / 2))
-            {
-                //Hit the front side of the Alien...
-                m_pBullet->SetY((fAlienY + fAlienH / 2.0f) + fBulletR);
-                m_pBullet->SetVelocityY(m_pBullet->GetVelocityY() * -1);
-                m_vecAliens[i]->SetHit(true);
+				if ((fBulletX + fBulletR > fAlienX - fAlienW / 2) &&
+					(fBulletX - fBulletR < fAlienX + fAlienW / 2) &&
+					(fBulletY + fBulletR > fAlienY - fAlienH / 2) &&
+					(fBulletY - fBulletR < fAlienY + fAlienH / 2))
+				{
+					// Collision
+					Destroy(pBullet);
+					m_vecAliens[i]->SetHit(true);
 
-                SetAliensRemaining(GetAliensRemaining() - 1);
-            }
-        }
-    }
+					SetAliensRemaining(GetAliensRemaining() - 1);
+				}
+			}
+		}
+	}
+}
+
+void CLevel::ProcessDestroyedEntites()
+{
+	auto itEntity = m_vecpDestroyedEntities.begin();
+	while (itEntity != m_vecpDestroyedEntities.end())
+	{
+		// Check type of entity
+		// If type is bullet then remove the entity from the bullet list
+		if (typeid(**itEntity) == typeid(CBullet))
+		{
+			m_listpBullets.remove(static_cast<CBullet*>(*itEntity));
+		}
+
+		// Else do nothing, as we are not removing any other entities from the game at the moment
+
+		// Remove the entity from the list of destroyed entities to clean up
+		itEntity = m_vecpDestroyedEntities.erase(itEntity);
+	}
+}
+
+void CLevel::Destroy(CEntity * _pEntity)
+{
+	m_vecpDestroyedEntities.push_back(_pEntity);
+}
+
+void CLevel::SpawnBullet(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY)
+{
+	m_listpBullets.push_back(new CBullet);
+	m_listpBullets.back()->Initialise(_fPosX, _fPosY, _fVelocityX, _fVelocityY);
 }
 
 void
@@ -287,24 +292,13 @@ CLevel::ProcessCheckForWin()
 void
 CLevel::ProcessBulletBounds()
 {
-	if (m_pBullet->GetX() < 0)
-    {
-        m_pBullet->SetX(0);
-    }
-	else if (m_pBullet->GetX() > m_iWidth)
-    {
-        m_pBullet->SetX(static_cast<float>(m_iWidth));
-    }
-
-    if (m_pBullet->GetY() < 0)
-    {
-        m_pBullet->SetY(0.0f);
-    }
-    else if (m_pBullet->GetY() > m_iHeight)
-    {
-        CGame::GetInstance().GameOverLost();
-        //m_pBullet->SetY(static_cast<float>(m_iHeight));
-    }
+	for (CBullet* pBullet : m_listpBullets)
+	{
+		if (pBullet->GetY() < 0)
+		{
+			Destroy(pBullet);
+		}
+	}
 }
 
 int 
