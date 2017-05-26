@@ -94,23 +94,23 @@ CSprite::Draw()
     SelectObject(s_hSharedSpriteDC, hOldObj);
 }
 
-void CSprite::DrawAnimated(int _iFrames, int _iFrameToDraw)
+void CSprite::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw)
 {
-	int iW = GetWidth() / _iFrames;
-	int iH = GetHeight() / _iFrames;
+	int iW = GetWidth() / _iSpriteIndexes;
+	int iH = GetHeight();
 
-	int iX = m_iX - (iW / 2) * _iFrameToDraw;
-	int iY = m_iY - (iH / 2) * _iFrameToDraw;
+	int iX = m_iX - (iW / 2);
+	int iY = m_iY - (iH / 2);
 
 	CBackBuffer* pBackBuffer = CGame::GetInstance().GetBackBuffer();
 
-	HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hMask);
+	/*HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hMask);
 
-	BitBlt(pBackBuffer->GetBFDC(), iX, iY, iW, iH, s_hSharedSpriteDC, 0, 0, SRCAND);
+	BitBlt(pBackBuffer->GetBFDC(), iX, iY, iW, iH, s_hSharedSpriteDC, 0, 0, SRCAND);*/
 
-	SelectObject(s_hSharedSpriteDC, m_hSprite);
+	HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hSprite);
 
-	BitBlt(pBackBuffer->GetBFDC(), iX, iY, iW, iH, s_hSharedSpriteDC, 0, 0, SRCPAINT);
+	BitBlt(pBackBuffer->GetBFDC(), iX, iY, iW, iH, s_hSharedSpriteDC, iW * (_iSpriteIndexToDraw - 1), 0, SRCPAINT);
 
 	SelectObject(s_hSharedSpriteDC, hOldObj);
 }

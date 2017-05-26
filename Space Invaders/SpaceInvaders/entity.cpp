@@ -57,6 +57,12 @@ CEntity::Draw()
 }
 
 void
+CEntity::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw)
+{
+	m_pSprite->DrawAnimated(_iSpriteIndexes, _iSpriteIndexToDraw);
+}
+
+void
 CEntity::Process(float _fDeltaTick)
 {
     m_pSprite->SetX(static_cast<int>(m_fX));

@@ -27,10 +27,13 @@
 
 // Implementation
 
+int CAlien::s_iAliens = 0;
+
 CAlien::CAlien()
 : m_bHit(false)
 {
-
+	s_iAliens++;
+	m_iFrameCount = s_iAliens;
 }
 
 CAlien::~CAlien()
@@ -51,7 +54,8 @@ CAlien::Draw()
 {
     if (!m_bHit)
     {
-        CEntity::Draw();
+		//CEntity::Draw();
+		CEntity::DrawAnimated(2, (m_iFrameCount % 2) + 1);
     }
 }
 
@@ -68,6 +72,11 @@ void
 CAlien::SetHit(bool _b)
 {
     m_bHit = _b;
+}
+
+void CAlien::IncrementFrameCount()
+{
+	m_iFrameCount++;
 }
 
 bool
