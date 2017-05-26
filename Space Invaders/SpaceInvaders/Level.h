@@ -19,6 +19,7 @@
 
 // Library Includes
 #include <vector>
+#include <list>
 #include <string>
 
 // Local Includes
@@ -33,6 +34,7 @@ class CPlayerShip;
 class CAlien;
 class CFPSCounter;
 class CBackGround;
+class CEntity;
 
 class CLevel
 {
@@ -47,14 +49,15 @@ public:
     virtual void Process(float _fDeltaTick);
 
     CPlayerShip* GetPlayerShip() const;
+	void SpawnBullet(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY);
 
     int GetAliensRemaining() const;
 
 protected:
-    void ProcessBulletWallCollision();
-	void ProcessPlayerShipWallCollison();
     void ProcessBulletPlayerShipCollision();
     void ProcessBulletAlienCollision();
+	void ProcessDestroyedEntites();
+	void Destroy(CEntity* _pEntity);
 
     void ProcessCheckForWin();
 
@@ -75,10 +78,12 @@ public:
 
 protected:
 	CBackGround* m_pBackground;
-    CBullet* m_pBullet;
+    std::list<CBullet*> m_listpBullets;
+	std::list<CEntity*> m_vecpDestroyedEntities;
     CPlayerShip* m_pPlayerShip;
     std::vector<CAlien*> m_vecAliens;
 	CFPSCounter* m_fpsCounter;
+
 
     int m_iWidth;
     int m_iHeight;
