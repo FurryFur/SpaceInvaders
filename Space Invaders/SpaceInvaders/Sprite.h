@@ -37,6 +37,7 @@ public:
     bool Initialise(int _iResourceID, int _iMaskResourceID);
 
     void Draw();
+	void DrawAnimated(int _iFrames, int _iFrameToDraw);
     void Process(float _fDeltaTick);
 
     int GetWidth() const;
