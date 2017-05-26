@@ -62,6 +62,8 @@ CPlayerShip::Process(float _fDeltaTick)
 {
     
 	float fHalfPlayerShipW = m_pSprite->GetWidth() / 2.0;
+	CGame& rGame = CGame::GetInstance();
+	CLevel* pLevel = rGame.GetLevel();
 
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
@@ -73,13 +75,12 @@ CPlayerShip::Process(float _fDeltaTick)
 	}
 	if (GetAsyncKeyState(VK_SPACE))
 	{
+		// TODO: Fix being able to fire two bullets sometimes
 		static seconds s_secTimeLastFired = seconds(0);
 		seconds secTimeNow = duration_cast<seconds>(steady_clock::now().time_since_epoch());
 
 		if ((secTimeNow - s_secTimeLastFired) >= (seconds(1) / m_fFireRate))
 		{
-			CGame& rGame = CGame::GetInstance();
-			CLevel* pLevel = rGame.GetLevel();
 			pLevel->SpawnBullet(m_fX, m_fY + m_pSprite->GetHeight() / 2, 0, 500);
 
 			s_secTimeLastFired = secTimeNow;
@@ -89,9 +90,9 @@ CPlayerShip::Process(float _fDeltaTick)
 	{
 		m_fX = fHalfPlayerShipW;
 	}
-	else if (m_fX + fHalfPlayerShipW >= 385)
+	else if (m_fX + fHalfPlayerShipW >= pLevel->GetWidth())
 	{
-		m_fX = 385-fHalfPlayerShipW;
+		m_fX = pLevel->GetWidth() - fHalfPlayerShipW;
 	}
 	
 	CEntity::Process(_fDeltaTick);
