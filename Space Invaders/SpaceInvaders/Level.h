@@ -50,6 +50,8 @@ public:
 
     CPlayerShip* GetPlayerShip() const;
 	void SpawnBullet(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY);
+	int GetWidth() const;
+	int GetHeight() const;
 
     int GetAliensRemaining() const;
 

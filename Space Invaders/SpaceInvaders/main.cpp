@@ -23,8 +23,8 @@
 #include "Level.h"
 #include "Playership.h"
 
-const int kiWidth = 400;
-const int kiHeight = 400;
+const int kiWidth = 960;
+const int kiHeight = 540;
 
 
 #define WINDOW_CLASS_NAME L"BSENGGFRAMEWORK"

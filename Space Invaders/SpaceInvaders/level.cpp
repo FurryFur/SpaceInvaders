@@ -256,6 +256,16 @@ void CLevel::SpawnBullet(float _fPosX, float _fPosY, float _fVelocityX, float _f
 	m_listpBullets.back()->Initialise(_fPosX, _fPosY, _fVelocityX, _fVelocityY);
 }
 
+int CLevel::GetWidth() const
+{
+	return m_iWidth;
+}
+
+int CLevel::GetHeight() const
+{
+	return m_iHeight;
+}
+
 void
 CLevel::ProcessCheckForWin()
 {
