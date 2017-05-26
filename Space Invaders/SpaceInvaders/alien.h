@@ -41,6 +41,7 @@ public:
     virtual void Process(float _fDeltaTick);
 
     void SetHit(bool _b);
+	void IncrementFrameCount();
     bool IsHit() const;
 
 protected:
@@ -54,6 +55,8 @@ public:
 
 protected:
     bool m_bHit;
+	int m_iFrameCount;
+	static int s_iAliens;
 
 private:
 
