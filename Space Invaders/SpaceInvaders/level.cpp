@@ -98,28 +98,25 @@ CLevel::Initialise(int _iWidth, int _iHeight)
     m_pPlayerShip->SetX(_iWidth / 2.0f);
     m_pPlayerShip->SetY(_iHeight - ( 1.5 * m_pPlayerShip->GetHeight()));
 
-    const int kiNumAliens = 36;
-    const int kiStartX = 20;
-    const int kiGap = 5;
-
-    int iCurrentX = kiStartX;
-    int iCurrentY = kiStartX;
+    const int kiNumAliens = 60;
+	const int kiAliensPerRow = 12;
+	const int kiStartX = 50;
+	const int kiStartY = 50;
+    const int kiHGap = 5;
+	const int kiVGap = 5;
 
     for (int i = 0; i < kiNumAliens; ++i)
     {
         CAlien* pAlien = new CAlien();
         VALIDATE(pAlien->Initialise());
 
+		int iCurRow = i / kiAliensPerRow;
+		int iCurCol = i % kiAliensPerRow;
+		int iCurrentX = kiStartX + iCurCol * (static_cast<int>(pAlien->GetWidth()) + kiHGap);
+		int iCurrentY = kiStartY + iCurRow * (static_cast<int>(pAlien->GetHeight()) + kiVGap);
+
         pAlien->SetX(static_cast<float>(iCurrentX));
         pAlien->SetY(static_cast<float>(iCurrentY));
-
-        iCurrentX += static_cast<int>(pAlien->GetWidth()) + kiGap;
-
-        if (iCurrentX > _iWidth)
-        {
-            iCurrentX = kiStartX;
-            iCurrentY += 20;
-        }
 
         m_vecAliens.push_back(pAlien);
     }
