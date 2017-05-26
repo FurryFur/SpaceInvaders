@@ -120,6 +120,21 @@
     <Image Include="Sprites\Background.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Sprites\BackgroundMask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\Ghost looking alien.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\Jellyfish looking alien.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\Saucer looking saucer.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\Spider looking alien.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="D:\Users\sebastian.ten7230\Desktop\Ghost looking alien.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -130,9 +145,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="D:\Users\sebastian.ten7230\Desktop\Spider looking alien.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Sprites\BackgroundMask.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

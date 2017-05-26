@@ -122,8 +122,12 @@
     <Image Include="Sprites\BallSprite.bmp" />
     <Image Include="Sprites\BrickMask.bmp" />
     <Image Include="Sprites\BrickSprite.bmp" />
+    <Image Include="Sprites\Ghost looking alien.bmp" />
+    <Image Include="Sprites\Jellyfish looking alien.bmp" />
     <Image Include="Sprites\PaddleMask.bmp" />
     <Image Include="Sprites\PaddleSprite.bmp" />
+    <Image Include="Sprites\Saucer looking saucer.bmp" />
+    <Image Include="Sprites\Spider looking alien.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
