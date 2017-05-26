@@ -212,16 +212,16 @@ CLevel::ProcessBulletPlayerShipCollision()
 void
 CLevel::ProcessBulletAlienCollision()
 {
-	for (CBullet* pBullet : m_listpBullets)
+	for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end(); ++itBullet)
 	{
 		for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
 		{
 			if (!m_vecAliens[i]->IsHit())
 			{
-				float fBulletR = pBullet->GetRadius();
+				float fBulletR = (*itBullet)->GetRadius();
 
-				float fBulletX = pBullet->GetX();
-				float fBulletY = pBullet->GetY();
+				float fBulletX = (*itBullet)->GetX();
+				float fBulletY = (*itBullet)->GetY();
 
 				float fAlienX = m_vecAliens[i]->GetX();
 				float fAlienY = m_vecAliens[i]->GetY();
@@ -234,8 +234,8 @@ CLevel::ProcessBulletAlienCollision()
 					(fBulletY + fBulletR > fAlienY - fAlienH / 2) &&
 					(fBulletY - fBulletR < fAlienY + fAlienH / 2))
 				{
-					// Collision
-					Destroy(pBullet);
+					// Collision: destroy bullet and alien
+					itBullet = m_listpBullets.erase(itBullet);
 					m_vecAliens[i]->SetHit(true);
 
 					SetAliensRemaining(GetAliensRemaining() - 1);
