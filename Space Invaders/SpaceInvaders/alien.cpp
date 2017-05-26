@@ -13,6 +13,7 @@
 //
 
 // Library Includes
+#include <Windows.h>
 
 // Local Includes
 #include "resource.h"
@@ -29,9 +30,12 @@
 
 int CAlien::s_iAliens = 0;
 
-CAlien::CAlien()
-: m_bHit(false)
+CAlien::CAlien() :
+	m_bHit(false),
+	m_kfMoveAmount(10),
+	m_kdwMoveTimer(0.5f)
 {
+	m_dwTimeLastMoved = timeGetTime();
 	s_iAliens++;
 	m_iFrameCount = s_iAliens;
 }
@@ -64,6 +68,18 @@ CAlien::Process(float _fDeltaTick)
 {
     if (!m_bHit)
     {
+		DWORD dwTimeNow = timeGetTime();
+		DWORD dwDtime = (dwTimeNow - m_dwTimeLastMoved) * 0.001f; // Delta time in seconds
+
+		if (dwDtime > m_kdwMoveTimer)
+		{
+			m_fX += m_kfMoveAmount;
+			IncrementFrameCount();
+
+			// Reset timer
+			m_dwTimeLastMoved = dwTimeNow;
+		}
+
         CEntity::Process(_fDeltaTick);
     }
 }
