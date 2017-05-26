@@ -57,7 +57,7 @@ protected:
     bool m_bHit;
 	int m_iFrameCount;
 	const float m_kfMoveAmount;
-	const DWORD m_kdwMoveTimer;
+	const double m_kdwMoveTimer;
 	DWORD m_dwTimeLastMoved;
 	static int s_iAliens;
 

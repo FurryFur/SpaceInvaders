@@ -32,8 +32,8 @@ int CAlien::s_iAliens = 0;
 
 CAlien::CAlien() :
 	m_bHit(false),
-	m_kfMoveAmount(10),
-	m_kdwMoveTimer(0.5f)
+	m_kfMoveAmount(8),
+	m_kdwMoveTimer(0.2f)
 {
 	m_dwTimeLastMoved = timeGetTime();
 	s_iAliens++;
@@ -69,9 +69,9 @@ CAlien::Process(float _fDeltaTick)
     if (!m_bHit)
     {
 		DWORD dwTimeNow = timeGetTime();
-		DWORD dwDtime = (dwTimeNow - m_dwTimeLastMoved) * 0.001f; // Delta time in seconds
+		double dwDtime = (dwTimeNow - m_dwTimeLastMoved) * 0.001f; // Delta time in seconds
 
-		if (dwDtime > m_kdwMoveTimer)
+		if (dwDtime >= m_kdwMoveTimer)
 		{
 			m_fX += m_kfMoveAmount;
 			IncrementFrameCount();
