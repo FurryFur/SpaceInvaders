@@ -102,8 +102,8 @@ CLevel::Initialise(int _iWidth, int _iHeight)
 	const int kiAliensPerRow = 12;
 	const int kiStartX = 50;
 	const int kiStartY = 50;
-    const int kiHGap = 5;
-	const int kiVGap = 5;
+    const int kiHGap = 20;
+	const int kiVGap = 20;
 
     for (int i = 0; i < kiNumAliens; ++i)
     {
