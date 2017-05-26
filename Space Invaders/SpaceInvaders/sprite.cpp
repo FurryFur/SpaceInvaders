@@ -110,7 +110,8 @@ void CSprite::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw)
 
 	HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hSprite);
 
-	BitBlt(pBackBuffer->GetBFDC(), iX, iY, iW, iH, s_hSharedSpriteDC, iW * (_iSpriteIndexToDraw - 1), 0, SRCPAINT);
+
+	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iW * 3, iH * 3, s_hSharedSpriteDC, iW * (_iSpriteIndexToDraw - 1), 0, iW, iH, SRCPAINT);
 
 	SelectObject(s_hSharedSpriteDC, hOldObj);
 }
