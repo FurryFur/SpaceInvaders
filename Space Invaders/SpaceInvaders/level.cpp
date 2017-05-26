@@ -169,9 +169,6 @@ CLevel::Process(float _fDeltaTick)
     {
         m_vecAliens[i]->Process(_fDeltaTick);
     }
-
-	ProcessDestroyedEntites();
-   
     
 	m_fpsCounter->CountFramesPerSecond(_fDeltaTick);
 }
@@ -212,9 +209,9 @@ CLevel::ProcessBulletPlayerShipCollision()
 void
 CLevel::ProcessBulletAlienCollision()
 {
-	for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end(); ++itBullet)
+	for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
 	{
-		for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
+		for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end();)
 		{
 			if (!m_vecAliens[i]->IsHit())
 			{
@@ -235,38 +232,22 @@ CLevel::ProcessBulletAlienCollision()
 					(fBulletY - fBulletR < fAlienY + fAlienH / 2))
 				{
 					// Collision: destroy bullet and alien
-					itBullet = m_listpBullets.erase(itBullet);
+ 					itBullet = m_listpBullets.erase(itBullet);
 					m_vecAliens[i]->SetHit(true);
 
 					SetAliensRemaining(GetAliensRemaining() - 1);
 				}
+				else
+				{
+					++itBullet;
+				}
+			}
+			else
+			{
+				++itBullet;
 			}
 		}
 	}
-}
-
-void CLevel::ProcessDestroyedEntites()
-{
-	auto itEntity = m_vecpDestroyedEntities.begin();
-	while (itEntity != m_vecpDestroyedEntities.end())
-	{
-		// Check type of entity
-		// If type is bullet then remove the entity from the bullet list
-		if (typeid(**itEntity) == typeid(CBullet))
-		{
-			m_listpBullets.remove(static_cast<CBullet*>(*itEntity));
-		}
-
-		// Else do nothing, as we are not removing any other entities from the game at the moment
-
-		// Remove the entity from the list of destroyed entities to clean up
-		itEntity = m_vecpDestroyedEntities.erase(itEntity);
-	}
-}
-
-void CLevel::Destroy(CEntity * _pEntity)
-{
-	m_vecpDestroyedEntities.push_back(_pEntity);
 }
 
 void CLevel::SpawnBullet(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY)
@@ -292,11 +273,16 @@ CLevel::ProcessCheckForWin()
 void
 CLevel::ProcessBulletBounds()
 {
-	for (CBullet* pBullet : m_listpBullets)
+	for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end();)
 	{
-		if (pBullet->GetY() < 0)
+		if ((*itBullet)->GetY() < 0)
 		{
-			Destroy(pBullet);
+			// Outside of screen: destroy bullet
+			itBullet = m_listpBullets.erase(itBullet);
+		}
+		else
+		{
+			++itBullet;
 		}
 	}
 }

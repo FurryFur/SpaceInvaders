@@ -56,8 +56,6 @@ public:
 protected:
     void ProcessBulletPlayerShipCollision();
     void ProcessBulletAlienCollision();
-	void ProcessDestroyedEntites();
-	void Destroy(CEntity* _pEntity);
 
     void ProcessCheckForWin();
 
