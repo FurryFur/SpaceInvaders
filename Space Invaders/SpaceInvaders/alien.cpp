@@ -37,7 +37,7 @@ const float CAlien::s_kfTimeToMove = 0.2f;
 
 CAlien::CAlien() :
 	m_bHit(false),
-	m_fElapsedTime(0)
+	m_fDeltaTimeSinceMoved(0)
 {
 	s_iAliens++;
 	m_iFrameCount = s_iAliens;
@@ -82,24 +82,17 @@ void CAlien::Draw()
 
 void CAlien::Process(float _fDeltaTick)
 {
-	m_fElapsedTime += _fDeltaTick;
+	m_fDeltaTimeSinceMoved += _fDeltaTick;
 
     if (!m_bHit)
     {
-		if (m_fElapsedTime >= s_kfTimeToMove)
+		if (m_fDeltaTimeSinceMoved >= s_kfTimeToMove)
 		{
-			CLevel* pLevel = CGame::GetInstance().GetLevel();
-			if (m_fX + s_fMoveAmount + m_pSprite->GetWidth() >= pLevel->GetWidth()
-			 || m_fX + s_fMoveAmount <= 0)
-			{
-				s_fMoveAmount *= -1;
-			}
-
 			m_fX += s_fMoveAmount;
 			IncrementFrameCount();
 
 			// Reset timer
-			m_fElapsedTime = 0;
+			m_fDeltaTimeSinceMoved = 0;
 		}
 
         CEntity::Process(_fDeltaTick);

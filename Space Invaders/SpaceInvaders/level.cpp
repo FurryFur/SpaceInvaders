@@ -23,7 +23,7 @@
 #include "Utils.h"
 #include "Backbuffer.h"
 #include "Framecounter.h"
-#include "Background.h"
+#include "Shader.h"
 
 // This Include
 #include "Level.h"
@@ -70,8 +70,8 @@ CLevel::~CLevel()
 	delete m_fpsCounter;
 	m_fpsCounter = 0;
 
-	delete m_pBackground;
-	m_pBackground = 0;
+	delete m_pShader;
+	m_pShader = 0;
 
 }
 
@@ -83,11 +83,11 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
     const float fBulletVelX = 200.0f;
     const float fBulletVelY = 75.0f;
 
-	m_pBackground = new CBackGround();
-	VALIDATE(m_pBackground->Initialise());
-	//Set the background position to start from {0,0}
-	m_pBackground->SetX((float)m_iWidth / 2);
-	m_pBackground->SetY((float)m_iHeight / 2);
+	m_pShader = new CShader();
+	VALIDATE(m_pShader->Initialise());
+	//Set the shader position to start from {0,0}
+	m_pShader->SetX((float)m_iWidth / 2);
+	m_pShader->SetY((float)m_iHeight / 2);
 
     m_pPlayerShip = new CPlayerShip();
     VALIDATE(m_pPlayerShip->Initialise());
@@ -142,7 +142,6 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
 
 void CLevel::Draw()
 {
-	m_pBackground->Draw();
 	for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
     {
         m_vecAliens[i]->Draw();
@@ -154,13 +153,14 @@ void CLevel::Draw()
 		pBullet->Draw();
 	}
 
+	m_pShader->DrawShader();
     DrawScore();
 	DrawFPS();
 }
 
 void CLevel::Process(float _fDeltaTick)
 {
-	m_pBackground->Process(_fDeltaTick);
+	m_pShader->Process(_fDeltaTick);
 	for (CBullet* pBullet : m_listpBullets)
 	{
 		pBullet->Process(_fDeltaTick);

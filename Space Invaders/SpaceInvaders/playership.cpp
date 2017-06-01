@@ -35,7 +35,7 @@ using namespace std::chrono;
 
 CPlayerShip::CPlayerShip() :
 	m_fFireRate(1),
-	m_fElapsedTime(0)
+	m_fDeltaTimeSinceMoved(0)
 {
 
 }
@@ -62,7 +62,7 @@ CPlayerShip::Draw()
 void
 CPlayerShip::Process(float _fDeltaTick)
 {
-	m_fElapsedTime += _fDeltaTick;
+	m_fDeltaTimeSinceMoved += _fDeltaTick;
 
 	float fHalfPlayerShipW = m_pSprite->GetWidth() / 2.0;
 	CGame& rGame = CGame::GetInstance();
@@ -78,11 +78,11 @@ CPlayerShip::Process(float _fDeltaTick)
 	}
 	if (GetAsyncKeyState(VK_SPACE))
 	{
-		if (m_fElapsedTime >= 1 / m_fFireRate)
+		if (m_fDeltaTimeSinceMoved >= 1 / m_fFireRate)
 		{
 			pLevel->SpawnBullet(m_fX, m_fY + m_pSprite->GetHeight() / 2, 0, 500);
 
-			m_fElapsedTime = 0;
+			m_fDeltaTimeSinceMoved = 0;
 		}
 	}
 	if (m_fX - fHalfPlayerShipW <= 0)

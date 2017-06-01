@@ -67,7 +67,7 @@ public:
 protected:
     bool m_bHit;
 	int m_iFrameCount;
-	float m_fElapsedTime;
+	float m_fDeltaTimeSinceMoved;
 	static float s_fMoveAmount;
 	ETYPE m_eType;
 	static const float s_kfTimeToMove;
