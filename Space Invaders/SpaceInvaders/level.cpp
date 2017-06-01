@@ -45,7 +45,6 @@ CLevel::CLevel()
 , m_fpsCounter(0)
 , m_fDeltaTimeAliensMoved(0)
 {
-
 }
 
 CLevel::~CLevel()
@@ -107,7 +106,20 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
 
     for (int i = 0; i < kiNumAliens; ++i)
     {
-        CAlien* pAlien = new CAlien();
+		CAlien* pAlien = new CAlien();
+		if (i < kiAliensPerRow)
+		{
+			pAlien->SetType(JELLYFISH);
+		}
+		else if (i < kiAliensPerRow * 3)
+		{
+			pAlien->SetType(SPIDER);
+		}
+		else
+		{
+			pAlien->SetType(GHOST);
+		}
+        
         VALIDATE(pAlien->Initialise());
 
 		int iCurRow = i / kiAliensPerRow;
@@ -322,6 +334,7 @@ void CLevel::SetAliensRemaining(int _i)
 void CLevel::DrawScore()
 {
     HDC hdc = CGame::GetInstance().GetBackBuffer()->GetBFDC();
+	SetTextColor(hdc, RGB(255, 255, 255));
 
     const int kiX = 0;
     const int kiY = m_iHeight - 14;

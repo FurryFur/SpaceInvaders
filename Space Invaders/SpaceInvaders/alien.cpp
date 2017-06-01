@@ -50,7 +50,23 @@ CAlien::~CAlien()
 
 bool CAlien::Initialise()
 {
-    VALIDATE(CEntity::Initialise(IDB_ALIENSPRITE, IDB_ALIENMASK));
+	switch (m_eType)
+	{
+	case JELLYFISH:
+		VALIDATE(CEntity::Initialise(IDB_BITMAP2, IDB_ALIENMASK));
+		break;
+	case SPIDER:
+		VALIDATE(CEntity::Initialise(IDB_BITMAP4, IDB_ALIENMASK));
+		break;
+	case GHOST:
+		VALIDATE(CEntity::Initialise(IDB_BITMAP1, IDB_ALIENMASK));
+		break;
+	case SAUCER:
+		VALIDATE(CEntity::Initialise(IDB_BITMAP3, IDB_ALIENMASK));
+		break;
+	default:
+		break;
+	}
 
     return (true);
 }
@@ -93,6 +109,11 @@ void CAlien::Process(float _fDeltaTick)
 void CAlien::SetHit(bool _b)
 {
     m_bHit = _b;
+}
+
+void CAlien::SetType(ETYPE _eType)
+{
+	m_eType = _eType;
 }
 
 void CAlien::IncrementFrameCount()
