@@ -48,6 +48,7 @@ public:
 
     void SetHit(bool _b);
 	void SetType(ETYPE _eType);
+	ETYPE GetType();
 	void IncrementFrameCount();
     bool IsHit() const;
 

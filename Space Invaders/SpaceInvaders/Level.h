@@ -54,6 +54,7 @@ public:
 	int GetHeight() const;
 
     int GetAliensRemaining() const;
+	int GetScore() const;
 
 protected:
     void ProcessBulletPlayerShipCollision();
@@ -69,6 +70,7 @@ protected:
 	void DrawFPS();
 
     void SetAliensRemaining(int _i);
+	void SetScore(int _i);
 
 private:
     CLevel(const CLevel& _kr);
@@ -91,6 +93,7 @@ protected:
     int m_iHeight;
 
     int m_iAliensRemaining;
+	int m_iScore;
 
     std::string m_strScore;
 
