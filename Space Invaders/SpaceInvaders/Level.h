@@ -33,7 +33,7 @@ class CBullet;
 class CPlayerShip;
 class CAlien;
 class CFPSCounter;
-class CBackGround;
+class CShader;
 class CEntity;
 
 class CLevel
@@ -77,7 +77,7 @@ private:
 public:
 
 protected:
-	CBackGround* m_pBackground;
+	CShader* m_pShader;
     std::list<CBullet*> m_listpBullets;
 	std::list<CEntity*> m_vecpDestroyedEntities;
     CPlayerShip* m_pPlayerShip;

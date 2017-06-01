@@ -38,6 +38,7 @@ public:
 	virtual bool Initialise(const int _kiSpriteID, const int _kiMaskID);
 
 	virtual void Draw() = 0;
+	virtual void DrawShader();
 	virtual void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw);
 	virtual void Process(float _fDeltaTick);
 
