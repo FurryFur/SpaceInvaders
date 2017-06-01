@@ -23,7 +23,13 @@
 #include "Entity.h"
 
 // Types
-
+enum ETYPE
+{
+	JELLYFISH,
+	SPIDER,
+	GHOST,
+	SAUCER
+};
 // Constants
 
 // Prototypes
@@ -41,6 +47,7 @@ public:
     virtual void Process(float _fDeltaTick);
 
     void SetHit(bool _b);
+	void SetType(ETYPE _eType);
 	void IncrementFrameCount();
     bool IsHit() const;
 
@@ -59,6 +66,7 @@ protected:
 	static float s_fMoveAmount;
 	const double m_kdwMoveTimer;
 	DWORD m_dwTimeLastMoved;
+	ETYPE m_eType;
 	static int s_iAliens;
 
 private:
