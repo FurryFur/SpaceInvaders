@@ -42,8 +42,10 @@ CLevel::CLevel()
 , m_iWidth(0)
 , m_iHeight(0)
 , m_fpsCounter(0)
-, m_fDeltaTimeAliensMoved(0)
+, m_fDeltaTimeAliensMoved(0),
+m_iScore(0)
 {
+	UpdateScoreText();
 }
 
 CLevel::~CLevel()
@@ -243,6 +245,22 @@ void CLevel::ProcessBulletAlienCollision()
 			{
 				// Collision: destroy bullet and alien
  				itBullet = m_listpBullets.erase(itBullet);
+				if ((*itAlien)->GetType() == GHOST)
+				{
+					SetScore(GetScore() + 10);
+				}
+				else if ((*itAlien)->GetType() == SPIDER)
+				{
+					SetScore(GetScore() + 20);
+				}
+				else if ((*itAlien)->GetType() == JELLYFISH)
+				{
+					SetScore(GetScore() + 40);
+				}
+				else if ((*itAlien)->GetType() == SAUCER)
+				{
+					SetScore(GetScore() + 200);
+				}
 				itAlien = m_vecAliens.erase(itAlien);
 				bCollision = true;
 			}
@@ -321,6 +339,17 @@ int CLevel::GetAliensRemaining() const
 	return m_vecAliens.size();
 }
 
+int CLevel::GetScore() const
+{
+	return m_iScore;
+}
+
+void CLevel::SetScore(int _i)
+{
+	m_iScore = _i;
+	UpdateScoreText();
+}
+
 void CLevel::DrawScore()
 {
     HDC hdc = CGame::GetInstance().GetBackBuffer()->GetBFDC();
@@ -337,9 +366,9 @@ void CLevel::DrawScore()
 
 void CLevel::UpdateScoreText()
 {
-    m_strScore = "Aliens Remaining: ";
+    m_strScore = "Score: ";
 
-    m_strScore += ToString(GetAliensRemaining());
+    m_strScore += ToString(GetScore());
 }
 
 

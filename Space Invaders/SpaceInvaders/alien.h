@@ -47,6 +47,7 @@ public:
     virtual void Process(float _fDeltaTick);
 
 	void SetType(ETYPE _eType);
+	ETYPE GetType();
 	void IncrementFrameCount();
 
 	static void ChangeMovementDirection();

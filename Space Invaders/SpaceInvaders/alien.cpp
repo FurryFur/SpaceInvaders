@@ -100,6 +100,11 @@ void CAlien::SetType(ETYPE _eType)
 	m_eType = _eType;
 }
 
+ETYPE CAlien::GetType()
+{
+	return m_eType;
+}
+
 void CAlien::IncrementFrameCount()
 {
 	m_iFrameCount++;
