@@ -21,6 +21,9 @@
 
 // This Include
 #include "Alien.h"
+#include "game.h"
+#include "level.h"
+#include "Sprite.h"
 
 // Static Variables
 
@@ -29,10 +32,10 @@
 // Implementation
 
 int CAlien::s_iAliens = 0;
+float CAlien::s_fMoveAmount = 8;
 
 CAlien::CAlien() :
 	m_bHit(false),
-	m_kfMoveAmount(8),
 	m_kdwMoveTimer(0.2f)
 {
 	m_dwTimeLastMoved = timeGetTime();
@@ -73,7 +76,14 @@ CAlien::Process(float _fDeltaTick)
 
 		if (dwDtime >= m_kdwMoveTimer)
 		{
-			m_fX += m_kfMoveAmount;
+			CLevel* pLevel = CGame::GetInstance().GetLevel();
+			if (m_fX + s_fMoveAmount + m_pSprite->GetWidth() >= pLevel->GetWidth()
+			 || m_fX + s_fMoveAmount <= 0)
+			{
+				s_fMoveAmount *= -1;
+			}
+
+			m_fX += s_fMoveAmount;
 			IncrementFrameCount();
 
 			// Reset timer

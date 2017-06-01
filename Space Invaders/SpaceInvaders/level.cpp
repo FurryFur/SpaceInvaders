@@ -206,43 +206,46 @@ CLevel::ProcessBulletPlayerShipCollision()
 void
 CLevel::ProcessBulletAlienCollision()
 {
-	for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
+	bool bCollision;
+	for (auto itAlien = m_vecAliens.begin(); itAlien != m_vecAliens.end();)
 	{
+		bCollision = false;
 		for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end();)
 		{
-			if (!m_vecAliens[i]->IsHit())
+			bCollision = false;
+
+			float fBulletR = (*itBullet)->GetRadius();
+
+			float fBulletX = (*itBullet)->GetX();
+			float fBulletY = (*itBullet)->GetY();
+
+			float fAlienX = (*itAlien)->GetX();
+			float fAlienY = (*itAlien)->GetY();
+
+			float fAlienH = (*itAlien)->GetHeight();
+			float fAlienW = (*itAlien)->GetWidth();
+
+			if ((fBulletX + fBulletR > fAlienX - fAlienW / 2) &&
+				(fBulletX - fBulletR < fAlienX + fAlienW / 2) &&
+				(fBulletY + fBulletR > fAlienY - fAlienH / 2) &&
+				(fBulletY - fBulletR < fAlienY + fAlienH / 2))
 			{
-				float fBulletR = (*itBullet)->GetRadius();
+				// Collision: destroy bullet and alien
+ 				itBullet = m_listpBullets.erase(itBullet);
+				itAlien = m_vecAliens.erase(itAlien);
+				bCollision = true;
 
-				float fBulletX = (*itBullet)->GetX();
-				float fBulletY = (*itBullet)->GetY();
-
-				float fAlienX = m_vecAliens[i]->GetX();
-				float fAlienY = m_vecAliens[i]->GetY();
-
-				float fAlienH = m_vecAliens[i]->GetHeight();
-				float fAlienW = m_vecAliens[i]->GetWidth();
-
-				if ((fBulletX + fBulletR > fAlienX - fAlienW / 2) &&
-					(fBulletX - fBulletR < fAlienX + fAlienW / 2) &&
-					(fBulletY + fBulletR > fAlienY - fAlienH / 2) &&
-					(fBulletY - fBulletR < fAlienY + fAlienH / 2))
-				{
-					// Collision: destroy bullet and alien
- 					itBullet = m_listpBullets.erase(itBullet);
-					m_vecAliens[i]->SetHit(true);
-
-					SetAliensRemaining(GetAliensRemaining() - 1);
-				}
-				else
-				{
-					++itBullet;
-				}
+				SetAliensRemaining(GetAliensRemaining() - 1);
 			}
-			else
+
+			if (!bCollision)
 			{
 				++itBullet;
 			}
+		}
+		if (!bCollision)
+		{
+			++itAlien;
 		}
 	}
 }
