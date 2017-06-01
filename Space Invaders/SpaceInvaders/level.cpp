@@ -235,10 +235,10 @@ void CLevel::ProcessBulletAlienCollision()
 			float fAlienH = (*itAlien)->GetHeight();
 			float fAlienW = (*itAlien)->GetWidth();
 
-			if ((fBulletX + fBulletR > fAlienX - fAlienW / 2) &&
-				(fBulletX - fBulletR < fAlienX + fAlienW / 2) &&
-				(fBulletY + fBulletR > fAlienY - fAlienH / 2) &&
-				(fBulletY - fBulletR < fAlienY + fAlienH / 2))
+			if ((fBulletX + fBulletR > fAlienX) &&
+				(fBulletX - fBulletR < fAlienX + fAlienW) &&
+				(fBulletY + fBulletR > fAlienY) &&
+				(fBulletY - fBulletR < fAlienY + fAlienH))
 			{
 				// Collision: destroy bullet and alien
  				itBullet = m_listpBullets.erase(itBullet);
