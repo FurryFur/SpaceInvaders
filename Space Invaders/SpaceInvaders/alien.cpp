@@ -33,12 +33,12 @@
 
 int CAlien::s_iAliens = 0;
 float CAlien::s_fMoveAmount = 8;
+const float CAlien::s_kfTimeToMove = 0.2f;
 
 CAlien::CAlien() :
 	m_bHit(false),
-	m_kdwMoveTimer(0.2f)
+	m_fElapsedTime(0)
 {
-	m_dwTimeLastMoved = timeGetTime();
 	s_iAliens++;
 	m_iFrameCount = s_iAliens;
 }
@@ -48,16 +48,14 @@ CAlien::~CAlien()
 
 }
 
-bool
-CAlien::Initialise()
+bool CAlien::Initialise()
 {
     VALIDATE(CEntity::Initialise(IDB_ALIENSPRITE, IDB_ALIENMASK));
 
     return (true);
 }
 
-void
-CAlien::Draw()
+void CAlien::Draw()
 {
     if (!m_bHit)
     {
@@ -66,15 +64,13 @@ CAlien::Draw()
     }
 }
 
-void
-CAlien::Process(float _fDeltaTick)
+void CAlien::Process(float _fDeltaTick)
 {
+	m_fElapsedTime += _fDeltaTick;
+
     if (!m_bHit)
     {
-		DWORD dwTimeNow = timeGetTime();
-		double dwDtime = (dwTimeNow - m_dwTimeLastMoved) * 0.001f; // Delta time in seconds
-
-		if (dwDtime >= m_kdwMoveTimer)
+		if (m_fElapsedTime >= s_kfTimeToMove)
 		{
 			CLevel* pLevel = CGame::GetInstance().GetLevel();
 			if (m_fX + s_fMoveAmount + m_pSprite->GetWidth() >= pLevel->GetWidth()
@@ -87,15 +83,14 @@ CAlien::Process(float _fDeltaTick)
 			IncrementFrameCount();
 
 			// Reset timer
-			m_dwTimeLastMoved = dwTimeNow;
+			m_fElapsedTime = 0;
 		}
 
         CEntity::Process(_fDeltaTick);
     }
 }
 
-void
-CAlien::SetHit(bool _b)
+void CAlien::SetHit(bool _b)
 {
     m_bHit = _b;
 }
@@ -105,9 +100,23 @@ void CAlien::IncrementFrameCount()
 	m_iFrameCount++;
 }
 
-bool
-CAlien::IsHit() const
+bool CAlien::IsHit() const
 {
     return (m_bHit);
+}
+
+void CAlien::ChangeMovementDirection()
+{
+	s_fMoveAmount *= -1;
+}
+
+float CAlien::GetTimeToMove()
+{
+	return s_kfTimeToMove;
+}
+
+float CAlien::GetMoveAmount()
+{
+	return s_fMoveAmount;
 }
 

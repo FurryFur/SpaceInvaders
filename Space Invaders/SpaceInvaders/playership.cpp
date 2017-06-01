@@ -33,7 +33,9 @@ using namespace std::chrono;
 
 // Implementation
 
-CPlayerShip::CPlayerShip()
+CPlayerShip::CPlayerShip() :
+	m_fFireRate(1),
+	m_fElapsedTime(0)
 {
 
 }
@@ -60,7 +62,8 @@ CPlayerShip::Draw()
 void
 CPlayerShip::Process(float _fDeltaTick)
 {
-    
+	m_fElapsedTime += _fDeltaTick;
+
 	float fHalfPlayerShipW = m_pSprite->GetWidth() / 2.0;
 	CGame& rGame = CGame::GetInstance();
 	CLevel* pLevel = rGame.GetLevel();
@@ -75,15 +78,11 @@ CPlayerShip::Process(float _fDeltaTick)
 	}
 	if (GetAsyncKeyState(VK_SPACE))
 	{
-		// TODO: Fix being able to fire two bullets sometimes
-		static seconds s_secTimeLastFired = seconds(0);
-		seconds secTimeNow = duration_cast<seconds>(steady_clock::now().time_since_epoch());
-
-		if ((secTimeNow - s_secTimeLastFired) >= (seconds(1) / m_fFireRate))
+		if (m_fElapsedTime >= 1 / m_fFireRate)
 		{
 			pLevel->SpawnBullet(m_fX, m_fY + m_pSprite->GetHeight() / 2, 0, 500);
 
-			s_secTimeLastFired = secTimeNow;
+			m_fElapsedTime = 0;
 		}
 	}
 	if (m_fX - fHalfPlayerShipW <= 0)

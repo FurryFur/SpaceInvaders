@@ -42,7 +42,8 @@ public:
 
 
 protected:
-	float m_fFireRate = 1; // Per Second
+	float m_fFireRate; // Per Second
+	float m_fElapsedTime;
 
 private:
     CPlayerShip(const CPlayerShip& _kr);

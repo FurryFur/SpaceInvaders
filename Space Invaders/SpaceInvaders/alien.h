@@ -44,6 +44,10 @@ public:
 	void IncrementFrameCount();
     bool IsHit() const;
 
+	static void ChangeMovementDirection();
+	static float GetTimeToMove();
+	static float GetMoveAmount();
+
 protected:
 
 private:
@@ -56,9 +60,9 @@ public:
 protected:
     bool m_bHit;
 	int m_iFrameCount;
+	float m_fElapsedTime;
 	static float s_fMoveAmount;
-	const double m_kdwMoveTimer;
-	DWORD m_dwTimeLastMoved;
+	static const float s_kfTimeToMove;
 	static int s_iAliens;
 
 private:

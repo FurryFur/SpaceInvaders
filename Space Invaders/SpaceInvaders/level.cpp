@@ -23,7 +23,7 @@
 #include "Utils.h"
 #include "Backbuffer.h"
 #include "Framecounter.h"
-#include "Shader.h"
+#include "Background.h"
 
 // This Include
 #include "Level.h"
@@ -43,6 +43,7 @@ CLevel::CLevel()
 , m_iWidth(0)
 , m_iHeight(0)
 , m_fpsCounter(0)
+, m_fDeltaTimeAliensMoved(0)
 {
 
 }
@@ -70,13 +71,12 @@ CLevel::~CLevel()
 	delete m_fpsCounter;
 	m_fpsCounter = 0;
 
-	delete m_pShader;
-	m_pShader = 0;
+	delete m_pBackground;
+	m_pBackground = 0;
 
 }
 
-bool
-CLevel::Initialise(int _iWidth, int _iHeight)
+bool CLevel::Initialise(int _iWidth, int _iHeight)
 {
     m_iWidth = _iWidth;
     m_iHeight = _iHeight;
@@ -84,11 +84,11 @@ CLevel::Initialise(int _iWidth, int _iHeight)
     const float fBulletVelX = 200.0f;
     const float fBulletVelY = 75.0f;
 
-	m_pShader = new CShader();
-	VALIDATE(m_pShader->Initialise());
-	//Set the shader position to start from {0,0}
-	m_pShader->SetX((float)m_iWidth / 2);
-	m_pShader->SetY((float)m_iHeight / 2);
+	m_pBackground = new CBackGround();
+	VALIDATE(m_pBackground->Initialise());
+	//Set the background position to start from {0,0}
+	m_pBackground->SetX((float)m_iWidth / 2);
+	m_pBackground->SetY((float)m_iHeight / 2);
 
     m_pPlayerShip = new CPlayerShip();
     VALIDATE(m_pPlayerShip->Initialise());
@@ -128,9 +128,9 @@ CLevel::Initialise(int _iWidth, int _iHeight)
     return (true);
 }
 
-void
-CLevel::Draw()
+void CLevel::Draw()
 {
+	m_pBackground->Draw();
 	for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
     {
         m_vecAliens[i]->Draw();
@@ -142,15 +142,13 @@ CLevel::Draw()
 		pBullet->Draw();
 	}
 
-	m_pShader->DrawShader();
     DrawScore();
 	DrawFPS();
 }
 
-void
-CLevel::Process(float _fDeltaTick)
+void CLevel::Process(float _fDeltaTick)
 {
-	m_pShader->Process(_fDeltaTick);
+	m_pBackground->Process(_fDeltaTick);
 	for (CBullet* pBullet : m_listpBullets)
 	{
 		pBullet->Process(_fDeltaTick);
@@ -161,6 +159,7 @@ CLevel::Process(float _fDeltaTick)
 
     ProcessCheckForWin();
 	ProcessBulletBounds();
+	ProcessAlienBounds(_fDeltaTick);
 
     for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
     {
@@ -170,14 +169,12 @@ CLevel::Process(float _fDeltaTick)
 	m_fpsCounter->CountFramesPerSecond(_fDeltaTick);
 }
 
-CPlayerShip* 
-CLevel::GetPlayerShip() const
+CPlayerShip* CLevel::GetPlayerShip() const
 {
     return (m_pPlayerShip);
 }
 
-void
-CLevel::ProcessBulletPlayerShipCollision()
+void CLevel::ProcessBulletPlayerShipCollision()
 {
 	for (CBullet* pBullet : m_listpBullets)
 	{
@@ -203,8 +200,7 @@ CLevel::ProcessBulletPlayerShipCollision()
 	}
 }
 
-void
-CLevel::ProcessBulletAlienCollision()
+void CLevel::ProcessBulletAlienCollision()
 {
 	bool bCollision;
 	for (auto itAlien = m_vecAliens.begin(); itAlien != m_vecAliens.end();)
@@ -266,8 +262,7 @@ int CLevel::GetHeight() const
 	return m_iHeight;
 }
 
-void
-CLevel::ProcessCheckForWin()
+void CLevel::ProcessCheckForWin()
 {
     for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
     {
@@ -280,8 +275,7 @@ CLevel::ProcessCheckForWin()
     CGame::GetInstance().GameOverWon();
 }
 
-void
-CLevel::ProcessBulletBounds()
+void CLevel::ProcessBulletBounds()
 {
 	for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end();)
 	{
@@ -297,21 +291,35 @@ CLevel::ProcessBulletBounds()
 	}
 }
 
-int 
-CLevel::GetAliensRemaining() const
+void CLevel::ProcessAlienBounds(float _fDeltaTick)
+{
+	m_fDeltaTimeAliensMoved += _fDeltaTick;
+
+	if (m_fDeltaTimeAliensMoved >= CAlien::GetTimeToMove())
+	{
+		for (CAlien* pAlien : m_vecAliens)
+		{
+			if (pAlien->GetX() + pAlien->GetWidth() + CAlien::GetMoveAmount() >= GetWidth()
+				|| pAlien->GetX() + CAlien::GetMoveAmount() <= 0)
+			{
+				CAlien::ChangeMovementDirection();
+			}
+		}
+	}
+}
+
+int CLevel::GetAliensRemaining() const
 {
     return (m_iAliensRemaining);
 }
 
-void 
-CLevel::SetAliensRemaining(int _i)
+void CLevel::SetAliensRemaining(int _i)
 {
     m_iAliensRemaining = _i;
     UpdateScoreText();
 }
 
-void
-CLevel::DrawScore()
+void CLevel::DrawScore()
 {
     HDC hdc = CGame::GetInstance().GetBackBuffer()->GetBFDC();
 
@@ -324,8 +332,7 @@ CLevel::DrawScore()
 
 
 
-void 
-CLevel::UpdateScoreText()
+void CLevel::UpdateScoreText()
 {
     m_strScore = "Aliens Remaining: ";
 
@@ -333,8 +340,7 @@ CLevel::UpdateScoreText()
 }
 
 
-void 
-CLevel::DrawFPS()
+void CLevel::DrawFPS()
 {
 	HDC hdc = CGame::GetInstance().GetBackBuffer()->GetBFDC(); 
 

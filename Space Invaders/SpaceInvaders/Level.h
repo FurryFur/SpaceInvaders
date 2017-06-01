@@ -62,6 +62,7 @@ protected:
     void ProcessCheckForWin();
 
     void ProcessBulletBounds();
+	void ProcessAlienBounds(float _fDeltaTick);
 
     void UpdateScoreText();
     void DrawScore();
@@ -83,6 +84,7 @@ protected:
     CPlayerShip* m_pPlayerShip;
     std::vector<CAlien*> m_vecAliens;
 	CFPSCounter* m_fpsCounter;
+	float m_fDeltaTimeAliensMoved;
 
 
     int m_iWidth;
