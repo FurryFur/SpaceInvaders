@@ -138,6 +138,7 @@ void CSprite::DrawShader()
 
 
 	StretchBlt(pBackBuffer->GetBFDC(), 0, 0, 960, 540, s_hSharedSpriteDC, 0, 0, iW, iH, SRCAND);
+	//StretchBlt(pBackBuffer->GetBFDC(), -10, -10, 960 + 10, 540 + 10, pBackBuffer->GetBFDC(), 0, 0, 960, 540, SRCINVERT);
 
 	SelectObject(s_hSharedSpriteDC, hOldObj);
 }

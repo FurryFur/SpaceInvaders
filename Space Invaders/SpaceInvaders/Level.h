@@ -49,6 +49,7 @@ public:
     virtual void Process(float _fDeltaTick);
 
     CPlayerShip* GetPlayerShip() const;
+	CAlien* GetAlien(int _iIdx) const;
 	void SpawnBullet(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY);
 	int GetWidth() const;
 	int GetHeight() const;
@@ -67,8 +68,6 @@ protected:
     void UpdateScoreText();
     void DrawScore();
 	void DrawFPS();
-
-    void SetAliensRemaining(int _i);
 
 private:
     CLevel(const CLevel& _kr);
@@ -89,8 +88,6 @@ protected:
 
     int m_iWidth;
     int m_iHeight;
-
-    int m_iAliensRemaining;
 
     std::string m_strScore;
 

@@ -46,10 +46,8 @@ public:
     virtual void Draw();
     virtual void Process(float _fDeltaTick);
 
-    void SetHit(bool _b);
 	void SetType(ETYPE _eType);
 	void IncrementFrameCount();
-    bool IsHit() const;
 
 	static void ChangeMovementDirection();
 	static float GetTimeToMove();
@@ -65,7 +63,9 @@ private:
 public:
 
 protected:
-    bool m_bHit;
+	void Shoot();
+	bool IsAlienBelow();
+
 	int m_iFrameCount;
 	float m_fDeltaTimeSinceMoved;
 	static float s_fMoveAmount;

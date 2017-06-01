@@ -37,8 +37,7 @@
 //#define CHEAT_BOUNCE_ON_BACK_WALL
 
 CLevel::CLevel()
-: m_iAliensRemaining(0)
-, m_pPlayerShip(0)
+: m_pPlayerShip(0)
 , m_listpBullets(0)
 , m_iWidth(0)
 , m_iHeight(0)
@@ -133,7 +132,6 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
         m_vecAliens.push_back(pAlien);
     }
 
-    SetAliensRemaining(kiNumAliens);
 	m_fpsCounter = new CFPSCounter();
 	VALIDATE(m_fpsCounter->Initialise());
 
@@ -186,6 +184,11 @@ CPlayerShip* CLevel::GetPlayerShip() const
     return (m_pPlayerShip);
 }
 
+CAlien * CLevel::GetAlien(int _iIdx) const
+{
+	return m_vecAliens.at(_iIdx);
+}
+
 void CLevel::ProcessBulletPlayerShipCollision()
 {
 	for (CBullet* pBullet : m_listpBullets)
@@ -218,7 +221,7 @@ void CLevel::ProcessBulletAlienCollision()
 	for (auto itAlien = m_vecAliens.begin(); itAlien != m_vecAliens.end();)
 	{
 		bCollision = false;
-		for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end();)
+		for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end() && itAlien != m_vecAliens.end();)
 		{
 			bCollision = false;
 
@@ -242,8 +245,6 @@ void CLevel::ProcessBulletAlienCollision()
  				itBullet = m_listpBullets.erase(itBullet);
 				itAlien = m_vecAliens.erase(itAlien);
 				bCollision = true;
-
-				SetAliensRemaining(GetAliensRemaining() - 1);
 			}
 
 			if (!bCollision)
@@ -276,22 +277,17 @@ int CLevel::GetHeight() const
 
 void CLevel::ProcessCheckForWin()
 {
-    for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
-    {
-        if (!m_vecAliens[i]->IsHit())
-        {
-            return;
-        }
-    }
-
-    CGame::GetInstance().GameOverWon();
+	if (GetAliensRemaining() == 0)
+	{
+		CGame::GetInstance().GameOverWon();
+	}
 }
 
 void CLevel::ProcessBulletBounds()
 {
 	for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end();)
 	{
-		if ((*itBullet)->GetY() < 0)
+		if ((*itBullet)->GetY() < 0 || (*itBullet)->GetY() > GetHeight())
 		{
 			// Outside of screen: destroy bullet
 			itBullet = m_listpBullets.erase(itBullet);
@@ -322,13 +318,7 @@ void CLevel::ProcessAlienBounds(float _fDeltaTick)
 
 int CLevel::GetAliensRemaining() const
 {
-    return (m_iAliensRemaining);
-}
-
-void CLevel::SetAliensRemaining(int _i)
-{
-    m_iAliensRemaining = _i;
-    UpdateScoreText();
+	return m_vecAliens.size();
 }
 
 void CLevel::DrawScore()
