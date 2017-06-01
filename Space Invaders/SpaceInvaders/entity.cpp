@@ -57,6 +57,12 @@ CEntity::Draw()
 }
 
 void
+CEntity::DrawShader()
+{
+	m_pSprite->DrawShader();
+}
+
+void
 CEntity::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw)
 {
 	m_pSprite->DrawAnimated(_iSpriteIndexes, _iSpriteIndexToDraw);

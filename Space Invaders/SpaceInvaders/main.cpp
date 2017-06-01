@@ -68,7 +68,7 @@ CreateAndRegisterWindow(HINSTANCE _hInstance, int _iWidth, int _iHeight, const w
 	winclass.hInstance = _hInstance;
 	winclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	winclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	winclass.hbrBackground = static_cast<HBRUSH> (GetStockObject(NULL_BRUSH));
+	winclass.hbrBackground = static_cast<HBRUSH> (GetStockObject(BLACK_BRUSH));
 	winclass.lpszMenuName = NULL;
 	winclass.lpszClassName = WINDOW_CLASS_NAME;
 	winclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);

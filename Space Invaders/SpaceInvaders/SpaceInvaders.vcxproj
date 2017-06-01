@@ -91,6 +91,7 @@
     <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="playership.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +106,7 @@
     <ClInclude Include="level.h" />
     <ClInclude Include="playership.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
@@ -123,6 +125,7 @@
     <Image Include="Sprites\PaddleMask.bmp" />
     <Image Include="Sprites\PaddleSprite.bmp" />
     <Image Include="Sprites\Saucer looking saucer.bmp" />
+    <Image Include="Sprites\SpaceInvaderShader.bmp" />
     <Image Include="Sprites\Spider looking alien.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -38,6 +38,7 @@ public:
 
     void Draw();
 	void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw);
+	void DrawShader();
     void Process(float _fDeltaTick);
 
     int GetWidth() const;
@@ -65,6 +66,8 @@ protected:
     //Center handle
     int m_iX;
     int m_iY;
+	int m_iScreenWidth;
+	int m_iScreenHeight;
 
     HBITMAP m_hSprite;
     HBITMAP m_hMask;
