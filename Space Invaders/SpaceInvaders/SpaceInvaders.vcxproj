@@ -137,6 +137,7 @@
     <Image Include="Sprites\SpaceInvadersShader2.bmp" />
     <Image Include="Sprites\SpaceInvadersShader3.bmp" />
     <Image Include="Sprites\SpaceInvadersShader4.bmp" />
+    <Image Include="Sprites\SpaceInvadersShader5.bmp" />
     <Image Include="Sprites\Spider looking alien.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

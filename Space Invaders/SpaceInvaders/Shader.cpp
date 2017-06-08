@@ -32,6 +32,9 @@ bool CShader::Initialise(int _iImageIndex)
 	case(4):
 		VALIDATE(CEntity::Initialise(IDB_BITMAP18, IDB_BACKGROUNDMASK));
 		break;
+	case(5):
+		VALIDATE(CEntity::Initialise(IDB_BITMAP19, IDB_BACKGROUNDMASK));
+		break;
 	default:
 		VALIDATE(CEntity::Initialise(IDB_BITMAP16, IDB_BACKGROUNDMASK));
 		break;

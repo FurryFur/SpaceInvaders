@@ -216,6 +216,10 @@ void CLevel::Process(float _fDeltaTick)
 	{
 		SwapBackground(4);
 	}
+	if (GetAsyncKeyState(VK_NUMPAD5) & 0x8000)
+	{
+		SwapBackground(5);
+	}
 }
 
 CPlayerShip* CLevel::GetPlayerShip() const
