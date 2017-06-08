@@ -3,6 +3,7 @@
 // Local Includes
 #include "resource.h"
 #include "Utils.h"
+#include "Sprite.h"
 
 
 
@@ -10,7 +11,7 @@ CBunker::CBunker(EBUNKERTYPE _eType):
 m_iFrameCount(1),
 m_eType(_eType)
 {
-
+	
 }
 
 
@@ -41,6 +42,7 @@ bool CBunker::Initialise()
 		break;
 	}
 
+	m_pSprite->SetFrames(3);
 	return true;
 }
 

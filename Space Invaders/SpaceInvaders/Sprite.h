@@ -40,6 +40,7 @@ public:
 	void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw, int _iScaler);
 	void DrawShader();
     void Process(float _fDeltaTick);
+	void SetFrames(int _iFrames);
 
     int GetWidth() const;
     int GetHeight() const;
@@ -53,7 +54,7 @@ public:
     void TranslateAbsolute(int _iX, int _iY);
 
 protected:
-
+	
 
 private:
     CSprite(const CSprite& _kr);
@@ -61,13 +62,14 @@ private:
 
     // Member Variables
 public:
-
+	
 protected:
     //Center handle
     int m_iX;
     int m_iY;
 	int m_iScreenWidth;
 	int m_iScreenHeight;
+	int m_iFrames;
 
     HBITMAP m_hSprite;
     HBITMAP m_hMask;
@@ -79,7 +81,6 @@ protected:
     static int s_iRefCount;
 
 private:
-
 };
 
 #endif    // __SPRITE_H__

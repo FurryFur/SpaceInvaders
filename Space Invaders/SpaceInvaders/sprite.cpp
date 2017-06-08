@@ -34,7 +34,8 @@ CSprite::CSprite()
 : m_iX(0)
 , m_iY(0),
 m_iScreenWidth(960),
-m_iScreenHeight(540)
+m_iScreenHeight(540),
+m_iFrames(1)
 {
     ++s_iRefCount;
 }
@@ -100,7 +101,7 @@ CSprite::Draw()
 
 void CSprite::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw, int _iScaler)
 {
-	int iW = GetWidth() / _iSpriteIndexes;
+	int iW = GetWidth();
 	int iH = GetHeight();
 
 	int iX = m_iX - (iW / 2);
@@ -152,7 +153,7 @@ CSprite::Process(float _fDeltaTick)
 int
 CSprite::GetWidth() const
 {
-    return (m_bitmapSprite.bmWidth);
+    return (m_bitmapSprite.bmWidth) / m_iFrames;
 }
 
 int
@@ -197,4 +198,9 @@ CSprite::TranslateAbsolute(int _iX, int _iY)
 {
     m_iX = _iX;
     m_iY = _iY;
+}
+
+void CSprite::SetFrames(int _iFrames)
+{
+	m_iFrames = _iFrames;
 }

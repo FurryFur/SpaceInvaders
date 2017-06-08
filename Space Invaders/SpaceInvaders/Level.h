@@ -52,6 +52,7 @@ public:
     CPlayerShip* GetPlayerShip() const;
 	CAlien* GetAlien(int _iIdx) const;
 	void SpawnBullet(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY);
+	void SwapBackground(int _iBackgroundImage);
 	int GetWidth() const;
 	int GetHeight() const;
 

@@ -9,7 +9,7 @@ public:
 
 	// Member Functions
 
-	virtual bool Initialise();
+	virtual bool Initialise(int _iImageIndex);
 
 	virtual void Draw();
 	virtual void Process(float _fDeltaTick);

@@ -86,7 +86,7 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
     const float fBulletVelY = 75.0f;
 
 	m_pShader = new CShader();
-	VALIDATE(m_pShader->Initialise());
+	VALIDATE(m_pShader->Initialise(1));
 	//Set the shader position to start from {0,0}
 	m_pShader->SetX((float)m_iWidth / 2);
 	m_pShader->SetY((float)m_iHeight / 2);
@@ -101,10 +101,10 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
 
 	// Spawns the bunkers at the desired positions
 	int iBunkerCentreX = 32;
-	CreateBunker(_iWidth - (_iWidth / 5) - iBunkerCentreX, _iHeight - (_iHeight / 5));
-	CreateBunker(_iWidth - (2 * (_iWidth / 5)) - iBunkerCentreX, _iHeight - (_iHeight / 5));
-	CreateBunker(_iWidth - (3 * (_iWidth / 5)) - iBunkerCentreX, _iHeight - (_iHeight / 5));
-	CreateBunker(_iWidth - (4 * (_iWidth / 5)) - iBunkerCentreX, _iHeight - (_iHeight / 5));
+	CreateBunker(_iWidth - (_iWidth / 5) - iBunkerCentreX, _iHeight - (_iHeight / 4));
+	CreateBunker(_iWidth - (2 * (_iWidth / 5)) - iBunkerCentreX, _iHeight - (_iHeight / 4));
+	CreateBunker(_iWidth - (3 * (_iWidth / 5)) - iBunkerCentreX, _iHeight - (_iHeight / 4));
+	CreateBunker(_iWidth - (4 * (_iWidth / 5)) - iBunkerCentreX, _iHeight - (_iHeight / 4));
 
     const int kiNumAliens = 60;
 	const int kiAliensPerRow = 12;
@@ -198,6 +198,24 @@ void CLevel::Process(float _fDeltaTick)
 	}
     
 	m_fpsCounter->CountFramesPerSecond(_fDeltaTick);
+
+	//TEMPORARY swapping shaders
+	if (GetAsyncKeyState(VK_NUMPAD1) & 0x8000)
+	{
+		SwapBackground(1);
+	}
+	if (GetAsyncKeyState(VK_NUMPAD2) & 0x8000)
+	{
+		SwapBackground(2);
+	}
+	if (GetAsyncKeyState(VK_NUMPAD3) & 0x8000)
+	{
+		SwapBackground(3);
+	}
+	if (GetAsyncKeyState(VK_NUMPAD4) & 0x8000)
+	{
+		SwapBackground(4);
+	}
 }
 
 CPlayerShip* CLevel::GetPlayerShip() const
@@ -417,6 +435,17 @@ void CLevel::SpawnBullet(float _fPosX, float _fPosY, float _fVelocityX, float _f
 {
 	m_listpBullets.push_back(new CBullet);
 	m_listpBullets.back()->Initialise(_fPosX, _fPosY, _fVelocityX, _fVelocityY);
+}
+
+void CLevel::SwapBackground(int _iBackgroundImage)
+{
+	delete m_pShader;
+
+	m_pShader = new CShader();
+	m_pShader->Initialise(_iBackgroundImage);
+	//Set the shader position to start from {0,0}
+	m_pShader->SetX((float)m_iWidth / 2);
+	m_pShader->SetY((float)m_iHeight / 2);
 }
 
 int CLevel::GetWidth() const

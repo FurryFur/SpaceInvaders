@@ -168,5 +168,14 @@
     <Image Include="sprites\bitmap10.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Sprites\SpaceInvadersShader2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\SpaceInvadersShader3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\SpaceInvadersShader4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
