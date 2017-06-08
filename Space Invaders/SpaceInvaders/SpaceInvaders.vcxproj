@@ -84,6 +84,7 @@
     <ClCompile Include="background.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="alien.cpp" />
+    <ClCompile Include="Bunker.cpp" />
     <ClCompile Include="clock.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="framecounter.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="background.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="alien.h" />
+    <ClInclude Include="Bunker.h" />
     <ClInclude Include="clock.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="framecounter.h" />
@@ -118,8 +120,14 @@
     <Image Include="Sprites\BackgroundMask.bmp" />
     <Image Include="Sprites\BallMask.bmp" />
     <Image Include="Sprites\BallSprite.bmp" />
+    <Image Include="sprites\bitmap10.bmp" />
     <Image Include="Sprites\BrickMask.bmp" />
     <Image Include="Sprites\BrickSprite.bmp" />
+    <Image Include="Sprites\BunkerArcLeft.bmp" />
+    <Image Include="Sprites\BunkerArcRight.bmp" />
+    <Image Include="Sprites\BunkerBlock.bmp" />
+    <Image Include="Sprites\BunkerTurnLeft.bmp" />
+    <Image Include="Sprites\BunkerTurnRight.bmp" />
     <Image Include="Sprites\Ghost looking alien.bmp" />
     <Image Include="Sprites\Jellyfish looking alien.bmp" />
     <Image Include="Sprites\PaddleMask.bmp" />

@@ -23,7 +23,7 @@
 #include "Entity.h"
 
 // Types
-enum ETYPE
+enum EALIENTYPE
 {
 	JELLYFISH,
 	SPIDER,
@@ -46,8 +46,8 @@ public:
     virtual void Draw();
     virtual void Process(float _fDeltaTick);
 
-	void SetType(ETYPE _eType);
-	ETYPE GetType();
+	void SetType(EALIENTYPE _eType);
+	EALIENTYPE GetType();
 	void IncrementFrameCount();
 
 	static void ChangeMovementDirection();
@@ -70,7 +70,7 @@ protected:
 	int m_iFrameCount;
 	float m_fDeltaTimeSinceMoved;
 	static float s_fMoveAmount;
-	ETYPE m_eType;
+	EALIENTYPE m_eType;
 	static const float s_kfTimeToMove;
 	static int s_iAliens;
 

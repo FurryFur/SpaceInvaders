@@ -32,6 +32,7 @@
 class CBullet;
 class CPlayerShip;
 class CAlien;
+class CBunker;
 class CFPSCounter;
 class CShader;
 class CEntity;
@@ -60,6 +61,7 @@ public:
 protected:
     void ProcessBulletPlayerShipCollision();
     void ProcessBulletAlienCollision();
+	void CreateBunker(int _iX, int _iY);
 
     void ProcessCheckForWin();
 
@@ -85,6 +87,7 @@ protected:
 	std::list<CEntity*> m_vecpDestroyedEntities;
     CPlayerShip* m_pPlayerShip;
     std::vector<CAlien*> m_vecAliens;
+	std::vector<CBunker*> m_vecBunkers;
 	CFPSCounter* m_fpsCounter;
 	float m_fDeltaTimeAliensMoved;
 

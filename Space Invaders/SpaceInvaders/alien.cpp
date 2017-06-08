@@ -95,12 +95,12 @@ void CAlien::Process(float _fDeltaTick)
     CEntity::Process(_fDeltaTick);
 }
 
-void CAlien::SetType(ETYPE _eType)
+void CAlien::SetType(EALIENTYPE _eType)
 {
 	m_eType = _eType;
 }
 
-ETYPE CAlien::GetType()
+EALIENTYPE CAlien::GetType()
 {
 	return m_eType;
 }

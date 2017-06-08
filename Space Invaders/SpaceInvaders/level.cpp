@@ -24,6 +24,7 @@
 #include "Backbuffer.h"
 #include "Framecounter.h"
 #include "Shader.h"
+#include "Bunker.h"
 
 // This Include
 #include "Level.h"
@@ -98,6 +99,8 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
     m_pPlayerShip->SetX(_iWidth / 2.0f);
     m_pPlayerShip->SetY(_iHeight - ( 1.5 * m_pPlayerShip->GetHeight()));
 
+	CreateBunker(_iWidth / 2, _iHeight / 2);
+
     const int kiNumAliens = 60;
 	const int kiAliensPerRow = 12;
 	const int kiStartX = 50;
@@ -147,6 +150,11 @@ void CLevel::Draw()
         m_vecAliens[i]->Draw();
     }
 
+	for (unsigned int i = 0; i < m_vecBunkers.size(); ++i)
+	{
+		m_vecBunkers[i]->Draw();
+	}
+
     m_pPlayerShip->Draw();
 	for (CBullet* pBullet : m_listpBullets)
 	{
@@ -177,6 +185,11 @@ void CLevel::Process(float _fDeltaTick)
     {
         m_vecAliens[i]->Process(_fDeltaTick);
     }
+
+	for (unsigned int i = 0; i < m_vecBunkers.size(); ++i)
+	{
+		m_vecBunkers[i]->Process(_fDeltaTick);
+	}
     
 	m_fpsCounter->CountFramesPerSecond(_fDeltaTick);
 }
@@ -273,6 +286,71 @@ void CLevel::ProcessBulletAlienCollision()
 		if (!bCollision)
 		{
 			++itAlien;
+		}
+	}
+}
+
+// Creates a full bunker with x,y as the top left corner
+void CLevel::CreateBunker(int _iX, int _iY)
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			CBunker* pBunker = nullptr;
+			switch (j)
+			{
+			case(0):
+				if (i == 0)
+				{
+					pBunker = new CBunker(EBUNKERTYPE::TURNRIGHT);
+				}
+				else
+				{
+					pBunker = new CBunker(EBUNKERTYPE::BLOCK);
+				}
+				break;
+			case(1):
+				if (i == 2)
+				{
+					pBunker = new CBunker(EBUNKERTYPE::ARCRIGHT);
+				}
+				else
+				{
+					pBunker = new CBunker(EBUNKERTYPE::BLOCK);
+				}
+				break;
+			case(2):
+				if (i == 2)
+				{
+					pBunker = new CBunker(EBUNKERTYPE::ARCLEFT);
+				}
+				else
+				{
+					pBunker = new CBunker(EBUNKERTYPE::BLOCK);
+				}
+				break;
+			case(3):
+				if (i == 0)
+				{
+					pBunker = new CBunker(EBUNKERTYPE::TURNLEFT);
+				}
+				else
+				{
+					pBunker = new CBunker(EBUNKERTYPE::BLOCK);
+				}
+				break;
+			default:
+				pBunker = new CBunker(EBUNKERTYPE::BLOCK);
+				break;
+			}
+
+
+			pBunker->Initialise();
+
+			pBunker->SetX(_iX + (j * 48));
+			pBunker->SetY(_iY + (i * 48));
+			m_vecBunkers.push_back(pBunker);
 		}
 	}
 }
