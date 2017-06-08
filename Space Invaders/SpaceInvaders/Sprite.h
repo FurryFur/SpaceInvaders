@@ -37,7 +37,7 @@ public:
     bool Initialise(int _iResourceID, int _iMaskResourceID);
 
     void Draw();
-	void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw);
+	void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw, int _iScaler);
 	void DrawShader();
     void Process(float _fDeltaTick);
 

@@ -50,6 +50,7 @@ public:
 
 	void SetType(EBUNKERTYPE _eType);
 	EBUNKERTYPE GetType();
+	int GetCurrentFrame();
 	void IncrementFrameCount();
 
 protected:

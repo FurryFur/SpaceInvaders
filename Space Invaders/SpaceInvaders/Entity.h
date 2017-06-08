@@ -39,7 +39,7 @@ public:
 
 	virtual void Draw() = 0;
 	virtual void DrawShader();
-	virtual void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw);
+	virtual void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw, int _iScaler);
 	virtual void Process(float _fDeltaTick);
 
 	void SetX(float _f);

@@ -61,6 +61,7 @@ public:
 protected:
     void ProcessBulletPlayerShipCollision();
     void ProcessBulletAlienCollision();
+	void ProcessBulletBunkerCollision();
 	void CreateBunker(int _iX, int _iY);
 
     void ProcessCheckForWin();

@@ -99,7 +99,12 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
     m_pPlayerShip->SetX(_iWidth / 2.0f);
     m_pPlayerShip->SetY(_iHeight - ( 1.5 * m_pPlayerShip->GetHeight()));
 
-	CreateBunker(_iWidth / 2, _iHeight / 2);
+	// Spawns the bunkers at the desired positions
+	int iBunkerCentreX = 32;
+	CreateBunker(_iWidth - (_iWidth / 5) - iBunkerCentreX, _iHeight - (_iHeight / 5));
+	CreateBunker(_iWidth - (2 * (_iWidth / 5)) - iBunkerCentreX, _iHeight - (_iHeight / 5));
+	CreateBunker(_iWidth - (3 * (_iWidth / 5)) - iBunkerCentreX, _iHeight - (_iHeight / 5));
+	CreateBunker(_iWidth - (4 * (_iWidth / 5)) - iBunkerCentreX, _iHeight - (_iHeight / 5));
 
     const int kiNumAliens = 60;
 	const int kiAliensPerRow = 12;
@@ -176,6 +181,7 @@ void CLevel::Process(float _fDeltaTick)
 	m_pPlayerShip->Process(_fDeltaTick);
     ProcessBulletPlayerShipCollision();
     ProcessBulletAlienCollision();
+	ProcessBulletBunkerCollision();
 
     ProcessCheckForWin();
 	ProcessBulletBounds();
@@ -290,6 +296,58 @@ void CLevel::ProcessBulletAlienCollision()
 	}
 }
 
+void CLevel::ProcessBulletBunkerCollision()
+{
+	bool bCollision;
+	for (auto itBunker = m_vecBunkers.begin(); itBunker != m_vecBunkers.end();)
+	{
+		bCollision = false;
+		for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end() && itBunker != m_vecBunkers.end();)
+		{
+			bCollision = false;
+
+			float fBulletR = (*itBullet)->GetRadius();
+
+			float fBulletX = (*itBullet)->GetX();
+			float fBulletY = (*itBullet)->GetY();
+
+			float fBunkerX = (*itBunker)->GetX();
+			float fBunkerY = (*itBunker)->GetY();
+
+			float fBunkerH = (*itBunker)->GetHeight();
+			float fBunkerW = (*itBunker)->GetWidth();
+
+			if ((fBulletX + fBulletR > fBunkerX) &&
+				(fBulletX - fBulletR < fBunkerX + fBunkerW) &&
+				(fBulletY + fBulletR > fBunkerY) &&
+				(fBulletY - fBulletR < fBunkerY + fBunkerH))
+			{
+				// Collision: destroy bullet and damage bunker
+				itBullet = m_listpBullets.erase(itBullet);
+
+				if ((*itBunker)->GetCurrentFrame() == 3)
+				{
+					itBunker = m_vecBunkers.erase(itBunker);
+				}
+				else
+				{
+					(*itBunker)->IncrementFrameCount();
+				}
+				bCollision = true;
+			}
+
+			if (!bCollision)
+			{
+				++itBullet;
+			}
+		}
+		if (!bCollision)
+		{
+			++itBunker;
+		}
+	}
+}
+
 // Creates a full bunker with x,y as the top left corner
 void CLevel::CreateBunker(int _iX, int _iY)
 {
@@ -348,8 +406,8 @@ void CLevel::CreateBunker(int _iX, int _iY)
 
 			pBunker->Initialise();
 
-			pBunker->SetX(_iX + (j * 48));
-			pBunker->SetY(_iY + (i * 48));
+			pBunker->SetX(_iX + (j * 16));
+			pBunker->SetY(_iY + (i * 16));
 			m_vecBunkers.push_back(pBunker);
 		}
 	}

@@ -98,7 +98,7 @@ CSprite::Draw()
     SelectObject(s_hSharedSpriteDC, hOldObj);
 }
 
-void CSprite::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw)
+void CSprite::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw, int _iScaler)
 {
 	int iW = GetWidth() / _iSpriteIndexes;
 	int iH = GetHeight();
@@ -115,7 +115,7 @@ void CSprite::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw)
 	HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hSprite);
 
 
-	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iW * 3, iH * 3, s_hSharedSpriteDC, iW * (_iSpriteIndexToDraw - 1), 0, iW, iH, SRCPAINT);
+	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iW * _iScaler, iH * _iScaler, s_hSharedSpriteDC, iW * (_iSpriteIndexToDraw - 1), 0, iW, iH, SRCPAINT);
 
 	SelectObject(s_hSharedSpriteDC, hOldObj);
 }

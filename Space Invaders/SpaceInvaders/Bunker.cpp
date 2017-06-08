@@ -46,7 +46,7 @@ bool CBunker::Initialise()
 
 void CBunker::Draw()
 {
-	CEntity::DrawAnimated(3, m_iFrameCount);
+	CEntity::DrawAnimated(3, m_iFrameCount, 1);
 }
 
 void CBunker::Process(float _fDeltaTick)
@@ -62,6 +62,11 @@ void CBunker::SetType(EBUNKERTYPE _eType)
 EBUNKERTYPE CBunker::GetType()
 {
 	return m_eType;
+}
+
+int CBunker::GetCurrentFrame()
+{
+	return m_iFrameCount;
 }
 
 void CBunker::IncrementFrameCount()

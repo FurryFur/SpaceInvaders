@@ -74,7 +74,7 @@ bool CAlien::Initialise()
 void CAlien::Draw()
 {
 	//CEntity::Draw();
-	CEntity::DrawAnimated(2, (m_iFrameCount % 2) + 1);
+	CEntity::DrawAnimated(2, (m_iFrameCount % 2) + 1, 3);
 }
 
 void CAlien::Process(float _fDeltaTick)
