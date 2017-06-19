@@ -22,6 +22,7 @@
 #include "Utils.h"
 #include "Level.h"
 #include "Playership.h"
+#include "MainMenu.h"
 
 const int kiWidth = 960;
 const int kiHeight = 540;
@@ -46,6 +47,19 @@ WindowProc(HWND _hWnd, UINT _uiMsg, WPARAM _wParam, LPARAM _lParam)
 		PostQuitMessage(0);
 
 		return(0);
+	}
+	case WM_LBUTTONDOWN:
+	{
+		
+		CMainMenu::GetInstance().m_bClickToHandle = true;
+		return(0);
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		CMainMenu::GetInstance().m_bClickReleaseToHandle = true;
+		return(0);
+		break;
 	}
 		break;
 

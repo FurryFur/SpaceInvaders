@@ -31,9 +31,17 @@
 // Prototypes
 class CLevel;
 class CBackBuffer;
+class CMainMenu;
 
 class CGame
 {
+public:
+	enum ELEVEL
+	{
+		MENU,
+		LEVEL,
+		GAMEOVER
+	};
 	// Member Functions
 public:
 	virtual ~CGame();
@@ -50,6 +58,8 @@ public:
 	HINSTANCE GetAppInstance();
 	HWND GetWindow();
 
+	void SetLevel(ELEVEL _eNewLevel);
+
 	void GameOverWon();
 	void GameOverLost();
 
@@ -63,13 +73,11 @@ private:
 	CGame();
 	CGame(const CGame& _kr);
 	CGame& operator= (const CGame& _kr);
-
-	// Member Variables
-public:
-
+	
 protected:
 	CClock* m_pClock;
 	CLevel* m_pLevel;
+	CMainMenu* m_pMenu;
 
 	CBackBuffer* m_pBackBuffer;
 
@@ -81,6 +89,7 @@ protected:
 	static CGame* s_pGame;
 
 private:
+	ELEVEL m_eCurrentLevel;
 
 };
 

@@ -19,6 +19,7 @@
 #include "Level.h"
 #include "BackBuffer.h"
 #include "Utils.h"
+#include "MainMenu.h"
 
 // This Include
 #include "Game.h"
@@ -36,6 +37,7 @@ CGame::CGame()
 	, m_hApplicationInstance(0)
 	, m_hMainWindow(0)
 	, m_pBackBuffer(0)
+	, m_eCurrentLevel(LEVEL)
 {
 
 }
@@ -68,6 +70,9 @@ CGame::Initialise(HINSTANCE _hInstance, HWND _hWnd, int _iWidth, int _iHeight)
 	m_pLevel = new CLevel();
 	VALIDATE(m_pLevel->Initialise(_iWidth, _iHeight));
 
+	m_pMenu = &CMainMenu::GetInstance();
+	VALIDATE(m_pMenu->Initialise(_iWidth, _iHeight, _hWnd));
+
 	ShowCursor(false);
 
 	return (true);
@@ -78,7 +83,19 @@ CGame::Draw()
 {
 	m_pBackBuffer->Clear();
 
-	m_pLevel->Draw();
+	switch (m_eCurrentLevel)
+	{
+	case CGame::MENU:
+		m_pMenu->Draw();
+		break;
+	case CGame::LEVEL:
+		m_pLevel->Draw();
+		break;
+	case CGame::GAMEOVER:
+		break;
+	default:
+		break;
+	}
 
 	m_pBackBuffer->Present();
 }
@@ -86,7 +103,19 @@ CGame::Draw()
 void
 CGame::Process(float _fDeltaTick)
 {
-	m_pLevel->Process(_fDeltaTick);
+	switch (m_eCurrentLevel)
+	{
+	case CGame::MENU:
+		m_pMenu->Process(_fDeltaTick);
+		break;
+	case CGame::LEVEL:
+		m_pLevel->Process(_fDeltaTick);
+		break;
+	case CGame::GAMEOVER:
+		break;
+	default:
+		break;
+	}
 }
 
 void
@@ -156,5 +185,10 @@ HWND
 CGame::GetWindow()
 {
 	return (m_hMainWindow);
+}
+
+void CGame::SetLevel(ELEVEL _eNewLevel)
+{
+	m_eCurrentLevel = _eNewLevel;
 }
 

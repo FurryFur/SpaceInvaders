@@ -192,5 +192,20 @@
     <Image Include="Sprites\SpaceInvadersShader5.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Sprites\BackButton.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\ButtonAlpha.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\HighScoreButton.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\PlayButton.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\QuitButton.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

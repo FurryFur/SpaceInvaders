@@ -120,6 +120,7 @@
     <ResourceCompile Include="Breakout.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Sprites\BackButton.bmp" />
     <Image Include="Sprites\Background.bmp" />
     <Image Include="Sprites\BackgroundMask.bmp" />
     <Image Include="Sprites\BallMask.bmp" />
@@ -132,10 +133,14 @@
     <Image Include="Sprites\BunkerBlock.bmp" />
     <Image Include="Sprites\BunkerTurnLeft.bmp" />
     <Image Include="Sprites\BunkerTurnRight.bmp" />
+    <Image Include="Sprites\ButtonAlpha.bmp" />
     <Image Include="Sprites\Ghost looking alien.bmp" />
+    <Image Include="Sprites\HighScoreButton.bmp" />
     <Image Include="Sprites\Jellyfish looking alien.bmp" />
     <Image Include="Sprites\PaddleMask.bmp" />
     <Image Include="Sprites\PaddleSprite.bmp" />
+    <Image Include="Sprites\PlayButton.bmp" />
+    <Image Include="Sprites\QuitButton.bmp" />
     <Image Include="Sprites\Saucer looking saucer.bmp" />
     <Image Include="Sprites\SpaceInvaderShader.bmp" />
     <Image Include="Sprites\SpaceInvadersShader2.bmp" />
