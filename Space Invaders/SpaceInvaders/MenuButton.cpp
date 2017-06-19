@@ -2,6 +2,8 @@
 #include "Entity.h"
 #include "Utils.h"
 #include "resource.h"
+#include "sprite.h"
+#include "game.h"
 
 
 CMenuButton::CMenuButton(BUTTONTYPE _eButtonType):
@@ -16,7 +18,33 @@ CMenuButton::~CMenuButton()
 
 bool CMenuButton::Initialise()
 {
-	VALIDATE(CEntity::Initialise(IDB_BITMAP2, IDB_ALIENMASK)); // Change these
+	switch (m_eButtonType)
+	{
+	case PLAY:
+	{
+		VALIDATE(CEntity::Initialise(IDB_PLAYBUTTON, IDB_BUTTONALPHA));
+	}
+		break;
+	case HIGHSCORE:
+	{
+		VALIDATE(CEntity::Initialise(IDB_HISCOREBUTTON, IDB_BUTTONALPHA));
+	}
+		break;
+	case QUIT:
+	{
+		VALIDATE(CEntity::Initialise(IDB_QUITBUTTON, IDB_BUTTONALPHA));
+	}
+		break;
+	case BACK:
+	{
+		VALIDATE(CEntity::Initialise(IDB_BACKBUTTON, IDB_BUTTONALPHA));
+	}
+		break;
+	default:
+		break;
+	}
+	GetSprite()->SetFrames(2);
+	
 	return true;
 }
 
@@ -24,7 +52,7 @@ void CMenuButton::Draw()
 {
 	if (GetIsActive())
 	{
-		CEntity::DrawAnimated(2, !GetIsSelected(), 1);
+		CEntity::DrawAnimated(2, 1 + GetIsSelected(), 1);
 	}
 }
 
@@ -48,7 +76,7 @@ void CMenuButton::ButtonPressed(std::vector<CMenuButton*> _pvecMenuButtons)
 	{
 	case PLAY:
 	{
-		// Set active scene to level
+		CGame::GetInstance().SetLevel(CGame::LEVEL);
 	}
 		break;
 	case HIGHSCORE:

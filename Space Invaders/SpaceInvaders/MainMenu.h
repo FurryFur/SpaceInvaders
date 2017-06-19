@@ -9,7 +9,6 @@
 class CMainMenu
 {
 public:
-	CMainMenu();
 	virtual ~CMainMenu();
 	
 	virtual bool Initialise(int _iWidth, int _iHeight, HWND _hMainWindow);
@@ -19,10 +18,18 @@ public:
 	int GetWidth() const;
 	int GetHeight() const;
 
+	bool m_bClickToHandle;
+	bool m_bClickReleaseToHandle;
+
+	// Singleton Methods
+	static CMainMenu& GetInstance();
+
 protected:
 	void ProcessButtonPress(POINT _poiMousePos);
+	void ProcessButtonRelease(POINT _poiMousePos);
 
 private:
+	CMainMenu();
 	CMainMenu(const CMainMenu& _kr);
 	CMainMenu& operator= (const CMainMenu& _kr);
 
@@ -31,5 +38,8 @@ protected:
 	int m_iHeight;
 	HWND m_hMainWindow;
 	std::vector<CMenuButton*> m_pvecMenuButtons;
+
+	// Singleton Instance
+	static CMainMenu* s_pMainMenu;
 };
 #endif // MAINMENU_H

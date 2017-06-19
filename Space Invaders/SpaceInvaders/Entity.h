@@ -47,6 +47,7 @@ public:
 
 	float GetX() const;
 	float GetY() const;
+	CSprite* GetSprite();
 
 	float GetHeight() const;
 	float GetWidth() const;

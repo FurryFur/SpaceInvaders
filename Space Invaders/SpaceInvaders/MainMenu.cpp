@@ -1,11 +1,14 @@
 #include "MainMenu.h"
 
-int iButtonOffset = 20;
+int iButtonOffset = 50;
 
 // Static variables
 static POINT s_poiMousePos;
+CMainMenu* CMainMenu::s_pMainMenu = 0;
 
-CMainMenu::CMainMenu()
+CMainMenu::CMainMenu():
+m_bClickToHandle(false),
+m_bClickReleaseToHandle(false)
 {
 }
 
@@ -61,7 +64,14 @@ void CMainMenu::Process(float _fDeltaTick)
 	GetCursorPos(&s_poiMousePos);
 	ScreenToClient(m_hMainWindow, &s_poiMousePos);
 
-	ProcessButtonPress(s_poiMousePos);
+	if (m_bClickToHandle)
+	{
+		ProcessButtonPress(s_poiMousePos);
+	}
+	if (m_bClickReleaseToHandle)
+	{
+		ProcessButtonRelease(s_poiMousePos);
+	}
 }
 
 int CMainMenu::GetWidth() const
@@ -74,7 +84,54 @@ int CMainMenu::GetHeight() const
 	return m_iHeight;
 }
 
+CMainMenu & CMainMenu::GetInstance()
+{
+	if (s_pMainMenu == 0)
+	{
+		s_pMainMenu = new CMainMenu();
+	}
+
+	return (*s_pMainMenu);
+}
+
 void CMainMenu::ProcessButtonPress(POINT _poiMousePos)
 {
-	//TODO: Loop Through the buttons and check if you click inside their bounding boxes
+	RECT recButton;
+	for (CMenuButton* pbutButton : m_pvecMenuButtons)
+	{
+		if (pbutButton->GetIsActive())
+		{
+			recButton = pbutButton->GetBoundingBox();
+
+			if (_poiMousePos.x > recButton.left && _poiMousePos.x < recButton.right &&
+				_poiMousePos.y > recButton.top && _poiMousePos.y < recButton.bottom)
+			{
+				pbutButton->SetIsSelected(true);
+			}
+		}
+	}
+	m_bClickToHandle = false;
+}
+
+void CMainMenu::ProcessButtonRelease(POINT _poiMousePos)
+{
+	RECT recButton;
+	for (CMenuButton* pbutButton : m_pvecMenuButtons)
+	{
+		if (pbutButton->GetIsActive())
+		{
+			recButton = pbutButton->GetBoundingBox();
+
+			if (_poiMousePos.x > recButton.left && _poiMousePos.x < recButton.right &&
+				_poiMousePos.y > recButton.top && _poiMousePos.y < recButton.bottom)
+			{
+				if (pbutButton->GetIsSelected())
+				{
+					pbutButton->ButtonPressed(m_pvecMenuButtons);
+				}
+			}
+		}
+		pbutButton->SetIsSelected(false);
+	}
+	m_bClickReleaseToHandle = false;
 }
