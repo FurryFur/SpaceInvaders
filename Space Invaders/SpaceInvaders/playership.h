@@ -40,10 +40,15 @@ public:
     virtual void Draw();
     virtual void Process(float _fDeltaTick);
 
+	void SetLives(size_t);
+	size_t GetLives() const;
+
 
 protected:
 	float m_fFireRate; // Per Second
 	float m_fDeltaTimeSinceMoved;
+	size_t m_szLives;
+	CSprite* m_pSpriteLife;
 
 private:
     CPlayerShip(const CPlayerShip& _kr);
