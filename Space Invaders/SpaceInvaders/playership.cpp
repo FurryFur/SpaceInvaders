@@ -35,14 +35,19 @@ using namespace std::chrono;
 
 CPlayerShip::CPlayerShip() :
 	m_fFireRate(1),
-	m_fDeltaTimeSinceMoved(0)
+	m_fDeltaTimeSinceMoved(0),
+	m_szLives(3)
 {
-
+	m_pSpriteLife = new CSprite();
+	m_pSpriteLife->Initialise(IDB_HEART, IDB_HEARTMASK);
+	m_pSpriteLife->SetX(32);
+	m_pSpriteLife->SetY(32);
 }
 
 CPlayerShip::~CPlayerShip()
 {
-
+	delete m_pSpriteLife;
+	m_pSpriteLife = nullptr;
 }
 
 bool
@@ -57,6 +62,13 @@ void
 CPlayerShip::Draw()
 {
     CEntity::Draw();
+
+	// Draw lives
+	for (size_t i = 0; i < GetLives(); ++i)
+	{
+		m_pSpriteLife->SetX(32 + i * 64);
+		m_pSpriteLife->Draw();
+	}
 }
 
 void
@@ -80,7 +92,7 @@ CPlayerShip::Process(float _fDeltaTick)
 	{
 		if (m_fDeltaTimeSinceMoved >= 1 / m_fFireRate)
 		{
-			pLevel->SpawnBullet(m_fX, m_fY + m_pSprite->GetHeight() / 2, 0, 500);
+			pLevel->SpawnBullet(m_fX, m_fY + m_pSprite->GetHeight() / 2, 0, -500, true);
 
 			m_fDeltaTimeSinceMoved = 0;
 		}
@@ -95,4 +107,14 @@ CPlayerShip::Process(float _fDeltaTick)
 	}
 	
 	CEntity::Process(_fDeltaTick);
+}
+
+void CPlayerShip::SetLives(size_t _szLives)
+{
+	m_szLives = _szLives;
+}
+
+size_t CPlayerShip::GetLives() const
+{
+	return m_szLives;
 }

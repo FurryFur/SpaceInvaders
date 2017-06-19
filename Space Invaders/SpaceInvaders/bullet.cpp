@@ -40,7 +40,7 @@ CBullet::~CBullet()
 }
 
 bool
-CBullet::Initialise(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY)
+CBullet::Initialise(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY, bool _bPlayerBullet)
 {
     VALIDATE(CEntity::Initialise(IDB_BULLETSPRITE, IDB_BULLETMASK));
     
@@ -49,6 +49,8 @@ CBullet::Initialise(float _fPosX, float _fPosY, float _fVelocityX, float _fVeloc
 
     m_fVelocityX = _fVelocityX;
     m_fVelocityY = _fVelocityY;
+
+	m_bIsPlayerBullet = _bPlayerBullet;
 
     return (true);
 }
@@ -68,7 +70,12 @@ CBullet::Process(float _fDeltaTick)
     CEntity::Process(_fDeltaTick);
 }
 
-float 
+bool CBullet::IsPlayerBullet() const
+{
+	return m_bIsPlayerBullet;
+}
+
+float
 CBullet::GetVelocityX() const
 {
     return (m_fVelocityX);
@@ -95,5 +102,6 @@ CBullet::SetVelocityY(float _fY)
 float 
 CBullet::GetRadius() const
 {
-    return (GetWidth() / 2.0f);
+
+	return (GetWidth() / 2.0f);
 }

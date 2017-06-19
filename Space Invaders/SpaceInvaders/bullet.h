@@ -36,11 +36,12 @@ public:
     CBullet();
     virtual ~CBullet();
 
-    virtual bool Initialise(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY);
+    virtual bool Initialise(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY, bool _bPlayerBullet);
 
     virtual void Draw();
     virtual void Process(float _fDeltaTick);
 
+	bool IsPlayerBullet() const;
     float GetVelocityX() const;
     float GetVelocityY() const;
     void SetVelocityX(float _fX);
@@ -60,6 +61,7 @@ public:
 protected:
     float m_fVelocityX;
     float m_fVelocityY;
+	bool m_bIsPlayerBullet;
 
 private:
 

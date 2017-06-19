@@ -234,27 +234,52 @@ CAlien * CLevel::GetAlien(int _iIdx) const
 
 void CLevel::ProcessBulletPlayerShipCollision()
 {
-	for (CBullet* pBullet : m_listpBullets)
+	for (auto it = m_listpBullets.begin(); it != m_listpBullets.end();)
 	{
-		float fBulletR = pBullet->GetRadius();
+		CBullet* pBullet = *it;
 
-		float fBulletX = pBullet->GetX();
-		float fBulletY = pBullet->GetY();
-
-		float fPlayerShipX = m_pPlayerShip->GetX();
-		float fPlayerShipY = m_pPlayerShip->GetY();
-
-		float fPlayerShipH = m_pPlayerShip->GetHeight();
-		float fPlayerShipW = m_pPlayerShip->GetWidth();
-
-		if ((fBulletX + fBulletR > fPlayerShipX - fPlayerShipW / 2) && //Bullet.right > PlayerShip.left
-			(fBulletX - fBulletR < fPlayerShipX + fPlayerShipW / 2) && //Bullet.left < PlayerShip.right
-			(fBulletY + fBulletR > fPlayerShipY - fPlayerShipH / 2) && //Bullet.bottom > PlayerShip.top
-			(fBulletY - fBulletR < fPlayerShipY + fPlayerShipH / 2))  //Bullet.top < PlayerShip.bottom
+		if (!pBullet->IsPlayerBullet())
 		{
-			pBullet->SetY((fPlayerShipY - fPlayerShipH / 2) - fBulletR);  //Set the Bullet.bottom = PlayerShip.top; to prevent the Bullet from going through the PlayerShip!
-			pBullet->SetVelocityY(pBullet->GetVelocityY() * -1); //Reverse Bullet's Y direction
+			float fBulletR = pBullet->GetRadius();
+
+			float fBulletX = pBullet->GetX();
+			float fBulletY = pBullet->GetY();
+
+			float fPlayerShipX = m_pPlayerShip->GetX();
+			float fPlayerShipY = m_pPlayerShip->GetY();
+
+			float fPlayerShipH = m_pPlayerShip->GetHeight();
+			float fPlayerShipW = m_pPlayerShip->GetWidth();
+
+			if ((fBulletX + fBulletR > fPlayerShipX - fPlayerShipW / 2) && //Bullet.right > PlayerShip.left
+				(fBulletX - fBulletR < fPlayerShipX + fPlayerShipW / 2) && //Bullet.left < PlayerShip.right
+				(fBulletY + fBulletR > fPlayerShipY - fPlayerShipH / 2) && //Bullet.bottom > PlayerShip.top
+				(fBulletY - fBulletR < fPlayerShipY + fPlayerShipH / 2))  //Bullet.top < PlayerShip.bottom
+			{
+				// Subtract from the players lives
+				m_pPlayerShip->SetLives(m_pPlayerShip->GetLives() - 1);
+
+				// Blow up the player ship
+				//m_pPlayerShip->Explode();
+
+				// Respawn their ship somewhere else
+				m_pPlayerShip->SetX(m_iWidth / 2.0f);
+
+				// Go to game over screen if the player is dead
+				if (m_pPlayerShip->GetLives() <= 0)
+				{
+
+				}
+
+				// Destroy the alien bullet
+				it = m_listpBullets.erase(it);
+
+				// Skip incrementing iterator
+				continue;
+			}
 		}
+
+		++it;
 	}
 }
 
@@ -435,10 +460,10 @@ void CLevel::CreateBunker(int _iX, int _iY)
 	}
 }
 
-void CLevel::SpawnBullet(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY)
+void CLevel::SpawnBullet(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY, bool _bPlayerBullet)
 {
 	m_listpBullets.push_back(new CBullet);
-	m_listpBullets.back()->Initialise(_fPosX, _fPosY, _fVelocityX, _fVelocityY);
+	m_listpBullets.back()->Initialise(_fPosX, _fPosY, _fVelocityX, _fVelocityY, _bPlayerBullet);
 }
 
 void CLevel::SwapBackground(int _iBackgroundImage)

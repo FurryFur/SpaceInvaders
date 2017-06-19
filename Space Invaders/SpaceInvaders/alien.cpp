@@ -131,7 +131,7 @@ void CAlien::Shoot()
 	if (!IsAlienBelow())
 	{
 		CLevel* pLevel = CGame::GetInstance().GetLevel();
-		pLevel->SpawnBullet(m_fX + m_pSprite->GetWidth(), m_fY + m_pSprite->GetHeight() + 20, 0, 500);
+		pLevel->SpawnBullet(m_fX + m_pSprite->GetWidth(), m_fY + m_pSprite->GetHeight() + 20, 0, 500, false);
 	}
 }
 
