@@ -1,6 +1,6 @@
 #include "MainMenu.h"
 
-int iButtonOffset = 20;
+int iButtonOffset = 50;
 
 // Static variables
 static POINT s_poiMousePos;
@@ -131,6 +131,7 @@ void CMainMenu::ProcessButtonRelease(POINT _poiMousePos)
 				}
 			}
 		}
+		pbutButton->SetIsSelected(false);
 	}
 	m_bClickReleaseToHandle = false;
 }

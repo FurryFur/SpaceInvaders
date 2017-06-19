@@ -109,12 +109,11 @@ void CSprite::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw, int _iS
 
 	CBackBuffer* pBackBuffer = CGame::GetInstance().GetBackBuffer();
 
-	/*HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hMask);
+	HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hMask);
 
-	BitBlt(pBackBuffer->GetBFDC(), iX, iY, iW, iH, s_hSharedSpriteDC, 0, 0, SRCAND);*/
+	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iW * _iScaler, iH * _iScaler, s_hSharedSpriteDC, iW * (_iSpriteIndexToDraw - 1), 0, iW, iH, SRCAND);
 
-	HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hSprite);
-
+	SelectObject(s_hSharedSpriteDC, m_hSprite);
 
 	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iW * _iScaler, iH * _iScaler, s_hSharedSpriteDC, iW * (_iSpriteIndexToDraw - 1), 0, iW, iH, SRCPAINT);
 

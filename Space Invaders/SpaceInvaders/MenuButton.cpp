@@ -2,6 +2,8 @@
 #include "Entity.h"
 #include "Utils.h"
 #include "resource.h"
+#include "sprite.h"
+#include "game.h"
 
 
 CMenuButton::CMenuButton(BUTTONTYPE _eButtonType):
@@ -41,6 +43,8 @@ bool CMenuButton::Initialise()
 	default:
 		break;
 	}
+	GetSprite()->SetFrames(2);
+	
 	return true;
 }
 
@@ -48,7 +52,7 @@ void CMenuButton::Draw()
 {
 	if (GetIsActive())
 	{
-		CEntity::DrawAnimated(2, !GetIsSelected(), 1);
+		CEntity::DrawAnimated(2, 1 + GetIsSelected(), 1);
 	}
 }
 
@@ -72,7 +76,7 @@ void CMenuButton::ButtonPressed(std::vector<CMenuButton*> _pvecMenuButtons)
 	{
 	case PLAY:
 	{
-		// Set active scene to level
+		CGame::GetInstance().SetLevel(CGame::LEVEL);
 	}
 		break;
 	case HIGHSCORE:

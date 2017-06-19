@@ -89,6 +89,11 @@ CEntity::GetY() const
     return (m_fY);
 }
 
+CSprite * CEntity::GetSprite()
+{
+	return m_pSprite;
+}
+
 float 
 CEntity::GetWidth() const
 {
@@ -105,10 +110,12 @@ void
 CEntity::SetX(float _f)
 {
     m_fX = _f;
+	m_pSprite->SetX((int)_f);
 }
 
 void
 CEntity::SetY(float _f)
 {
     m_fY = _f;
+	m_pSprite->SetY((int)_f);
 }

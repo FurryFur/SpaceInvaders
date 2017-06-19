@@ -37,7 +37,7 @@ CGame::CGame()
 	, m_hApplicationInstance(0)
 	, m_hMainWindow(0)
 	, m_pBackBuffer(0)
-	, m_eCurrentLevel(LEVEL)
+	, m_eCurrentLevel(MENU)
 {
 
 }
@@ -73,7 +73,7 @@ CGame::Initialise(HINSTANCE _hInstance, HWND _hWnd, int _iWidth, int _iHeight)
 	m_pMenu = &CMainMenu::GetInstance();
 	VALIDATE(m_pMenu->Initialise(_iWidth, _iHeight, _hWnd));
 
-	ShowCursor(false);
+	ShowCursor(true);
 
 	return (true);
 }
