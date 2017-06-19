@@ -20,6 +20,7 @@
 
 // Library Includes
 #include <windows.h>
+#include <random>
 
 // Local Includes
 #include "Clock.h"

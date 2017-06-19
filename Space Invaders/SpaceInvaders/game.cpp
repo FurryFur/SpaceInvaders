@@ -37,7 +37,6 @@ CGame::CGame()
 	, m_hMainWindow(0)
 	, m_pBackBuffer(0)
 {
-
 }
 
 CGame::~CGame()

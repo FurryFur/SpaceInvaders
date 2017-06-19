@@ -36,8 +36,10 @@ using namespace std::chrono;
 CPlayerShip::CPlayerShip() :
 	m_fFireRate(1),
 	m_fDeltaTimeSinceMoved(0),
-	m_szLives(3)
+	m_kszMaxLives(3)
 {
+	m_szLives = m_kszMaxLives;
+
 	m_pSpriteLife = new CSprite();
 	m_pSpriteLife->Initialise(IDB_HEART, IDB_HEARTMASK);
 	m_pSpriteLife->SetX(32);
@@ -111,7 +113,14 @@ CPlayerShip::Process(float _fDeltaTick)
 
 void CPlayerShip::SetLives(size_t _szLives)
 {
-	m_szLives = _szLives;
+	if (m_szLives > m_kszMaxLives)
+	{
+		m_szLives = 3;
+	}
+	else
+	{
+		m_szLives = _szLives;
+	}
 }
 
 size_t CPlayerShip::GetLives() const
