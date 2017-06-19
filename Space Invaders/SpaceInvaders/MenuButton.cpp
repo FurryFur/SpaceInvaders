@@ -62,8 +62,8 @@ RECT CMenuButton::GetBoundingBox()
 
 	if (GetIsActive())
 	{
-		recButtonRect.left = GetX();
-		recButtonRect.top = GetY();
+		recButtonRect.left = GetX() - GetWidth() / 2;
+		recButtonRect.top = GetY() - GetHeight() / 2;
 		recButtonRect.right = recButtonRect.left + GetWidth();
 		recButtonRect.bottom = recButtonRect.top + GetHeight();
 	}

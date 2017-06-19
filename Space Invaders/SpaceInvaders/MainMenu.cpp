@@ -1,6 +1,6 @@
 #include "MainMenu.h"
 
-int iButtonOffset = 50;
+int iButtonOffset = 100;
 
 // Static variables
 static POINT s_poiMousePos;
