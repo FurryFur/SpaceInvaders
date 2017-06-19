@@ -91,6 +91,8 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MenuButton.cpp" />
     <ClCompile Include="playership.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -106,6 +108,8 @@
     <ClInclude Include="framecounter.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="level.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MenuButton.h" />
     <ClInclude Include="playership.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Shader.h" />

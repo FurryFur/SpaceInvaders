@@ -43,7 +43,7 @@ class CLevel
 public:
     CLevel();
     virtual ~CLevel();
-
+	
     virtual bool Initialise(int _iWidth, int _iHeight);
 
     virtual void Draw();
