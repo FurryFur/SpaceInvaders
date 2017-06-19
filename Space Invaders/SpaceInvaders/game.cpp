@@ -39,7 +39,6 @@ CGame::CGame()
 	, m_pBackBuffer(0)
 	, m_eCurrentLevel(MENU)
 {
-
 }
 
 CGame::~CGame()

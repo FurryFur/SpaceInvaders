@@ -86,7 +86,7 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
     const float fBulletVelY = 75.0f;
 
 	m_pShader = new CShader();
-	VALIDATE(m_pShader->Initialise(1));
+	VALIDATE(m_pShader->Initialise(3));
 	//Set the shader position to start from {0,0}
 	m_pShader->SetX((float)m_iWidth / 2);
 	m_pShader->SetY((float)m_iHeight / 2);
@@ -232,51 +232,101 @@ CAlien * CLevel::GetAlien(int _iIdx) const
 	return m_vecAliens.at(_iIdx);
 }
 
+bool CLevel::OverlapsBullet(const CEntity* _pEntity)
+{
+	for (CBullet*& pBullet : m_listpBullets)
+	{
+		if (OverlapsBullet(_pEntity, pBullet))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool CLevel::OverlapsBullet(const CEntity* _pEntity, const CBullet* _pBullet)
+{
+	float fBulletR = _pBullet->GetRadius();
+
+	float fBulletX = _pBullet->GetX();
+	float fBulletY = _pBullet->GetY();
+
+	float fEntityX = _pEntity->GetX();
+	float fEntityY = _pEntity->GetY();
+
+	float fEntityH = _pEntity->GetHeight();
+	float fEntityW = _pEntity->GetWidth();
+
+	if ((fBulletX + fBulletR > fEntityX - fEntityW / 2) && //Bullet.right > Entity.left
+		(fBulletX - fBulletR < fEntityX + fEntityW / 2) && //Bullet.left < Entity.right
+		(fBulletY + fBulletR > fEntityY - fEntityH / 2) && //Bullet.bottom > Entity.top
+		(fBulletY - fBulletR < fEntityY + fEntityH / 2))  //Bullet.top < Entity.bottom
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool CLevel::IsOutsideOfLevel(const CEntity * _pEntity)
+{
+	if (_pEntity->GetX() + _pEntity->GetWidth() >= GetWidth() || _pEntity->GetX() <= 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void CLevel::ProcessBulletPlayerShipCollision()
 {
 	for (auto it = m_listpBullets.begin(); it != m_listpBullets.end();)
 	{
 		CBullet* pBullet = *it;
 
-		if (!pBullet->IsPlayerBullet())
+		if (!pBullet->IsPlayerBullet() && OverlapsBullet(m_pPlayerShip, pBullet))
 		{
-			float fBulletR = pBullet->GetRadius();
+			// Blow up the player ship
+			//m_pPlayerShip->Explode();
 
-			float fBulletX = pBullet->GetX();
-			float fBulletY = pBullet->GetY();
-
-			float fPlayerShipX = m_pPlayerShip->GetX();
-			float fPlayerShipY = m_pPlayerShip->GetY();
-
-			float fPlayerShipH = m_pPlayerShip->GetHeight();
-			float fPlayerShipW = m_pPlayerShip->GetWidth();
-
-			if ((fBulletX + fBulletR > fPlayerShipX - fPlayerShipW / 2) && //Bullet.right > PlayerShip.left
-				(fBulletX - fBulletR < fPlayerShipX + fPlayerShipW / 2) && //Bullet.left < PlayerShip.right
-				(fBulletY + fBulletR > fPlayerShipY - fPlayerShipH / 2) && //Bullet.bottom > PlayerShip.top
-				(fBulletY - fBulletR < fPlayerShipY + fPlayerShipH / 2))  //Bullet.top < PlayerShip.bottom
+			// Go to game over screen if the player is dead
+			if (m_pPlayerShip->GetLives() <= 0)
 			{
-				// Subtract from the players lives
-				m_pPlayerShip->SetLives(m_pPlayerShip->GetLives() - 1);
 
-				// Blow up the player ship
-				//m_pPlayerShip->Explode();
+			}
+			else
+			{
+				// Decrement the players lives
+				m_pPlayerShip->SetLives(m_pPlayerShip->GetLives() - 1);
 
 				// Respawn their ship somewhere else
 				m_pPlayerShip->SetX(m_iWidth / 2.0f);
 
-				// Go to game over screen if the player is dead
-				if (m_pPlayerShip->GetLives() <= 0)
+				// Move the ship until we no longer overlap bullets
+				int iDirToggle = 1;
+				while (OverlapsBullet(m_pPlayerShip))
 				{
+					m_pPlayerShip->SetX(m_pPlayerShip->GetX() + m_pPlayerShip->GetWidth() * iDirToggle);
 
-				}
-
-				// Destroy the alien bullet
-				it = m_listpBullets.erase(it);
-
-				// Skip incrementing iterator
-				continue;
+					// Keep the ship inside the level
+					if (IsOutsideOfLevel(m_pPlayerShip))
+					{
+						iDirToggle *= -1;
+						m_pPlayerShip->SetX((m_pPlayerShip->GetX() + 2 * m_pPlayerShip->GetWidth() * iDirToggle));
+					}
+				}	
 			}
+
+			// Destroy the alien bullet
+			it = m_listpBullets.erase(it);
+
+			// Skip incrementing iterator
+			continue;
 		}
 
 		++it;
@@ -293,21 +343,7 @@ void CLevel::ProcessBulletAlienCollision()
 		{
 			bCollision = false;
 
-			float fBulletR = (*itBullet)->GetRadius();
-
-			float fBulletX = (*itBullet)->GetX();
-			float fBulletY = (*itBullet)->GetY();
-
-			float fAlienX = (*itAlien)->GetX();
-			float fAlienY = (*itAlien)->GetY();
-
-			float fAlienH = (*itAlien)->GetHeight();
-			float fAlienW = (*itAlien)->GetWidth();
-
-			if ((fBulletX + fBulletR > fAlienX) &&
-				(fBulletX - fBulletR < fAlienX + fAlienW) &&
-				(fBulletY + fBulletR > fAlienY) &&
-				(fBulletY - fBulletR < fAlienY + fAlienH))
+			if (OverlapsBullet(*itAlien, *itBullet))
 			{
 				// Collision: destroy bullet and alien
  				itBullet = m_listpBullets.erase(itBullet);
@@ -353,21 +389,7 @@ void CLevel::ProcessBulletBunkerCollision()
 		{
 			bCollision = false;
 
-			float fBulletR = (*itBullet)->GetRadius();
-
-			float fBulletX = (*itBullet)->GetX();
-			float fBulletY = (*itBullet)->GetY();
-
-			float fBunkerX = (*itBunker)->GetX();
-			float fBunkerY = (*itBunker)->GetY();
-
-			float fBunkerH = (*itBunker)->GetHeight();
-			float fBunkerW = (*itBunker)->GetWidth();
-
-			if ((fBulletX + fBulletR > fBunkerX) &&
-				(fBulletX - fBulletR < fBunkerX + fBunkerW) &&
-				(fBulletY + fBulletR > fBunkerY) &&
-				(fBulletY - fBulletR < fBunkerY + fBunkerH))
+			if (OverlapsBullet(*itBunker, *itBullet))
 			{
 				// Collision: destroy bullet and damage bunker
 				itBullet = m_listpBullets.erase(itBullet);

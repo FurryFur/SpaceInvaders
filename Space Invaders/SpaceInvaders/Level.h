@@ -64,7 +64,9 @@ protected:
     void ProcessBulletAlienCollision();
 	void ProcessBulletBunkerCollision();
 	void CreateBunker(int _iX, int _iY);
-
+	bool OverlapsBullet(const CEntity*);
+	bool OverlapsBullet(const CEntity*, const CBullet*);
+	bool IsOutsideOfLevel(const CEntity*);
     void ProcessCheckForWin();
 
     void ProcessBulletBounds();

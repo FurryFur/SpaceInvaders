@@ -48,6 +48,7 @@ protected:
 	float m_fFireRate; // Per Second
 	float m_fDeltaTimeSinceMoved;
 	size_t m_szLives;
+	const size_t m_kszMaxLives;
 	CSprite* m_pSpriteLife;
 
 private:

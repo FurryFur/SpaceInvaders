@@ -80,14 +80,23 @@ void CAlien::Draw()
 
 void CAlien::Process(float _fDeltaTick)
 {
+	static std::random_device                    s_randDev;
+	static std::mt19937                          s_randGen(s_randDev());
+	static std::uniform_real_distribution<float> s_randDist(0.0f, 100.0f);
+
 	m_fDeltaTimeSinceMoved += _fDeltaTick;
 
 	if (m_fDeltaTimeSinceMoved >= s_kfTimeToMove)
 	{
 		m_fX += s_fMoveAmount;
 		IncrementFrameCount();
-
-		Shoot();
+		
+		
+		float fRandomNum = s_randDist(s_randGen);
+		if (fRandomNum < 1.0f)
+		{
+			Shoot();
+		}
 
 		// Reset timer
 		m_fDeltaTimeSinceMoved = 0;

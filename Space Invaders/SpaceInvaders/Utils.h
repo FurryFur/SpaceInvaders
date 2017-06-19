@@ -20,6 +20,8 @@
 // Library Includes
 #include <strstream>
 
+#include "game.h"
+
 // Local Includes
 
 // Types
@@ -37,7 +39,6 @@ std::string ToString(const T& _value)
     theStream << _value << std::ends;
     return (theStream.str());
 }
-
 
 #endif    // __UTILS_H__
 
