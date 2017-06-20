@@ -38,7 +38,8 @@ const float CAlien::s_kfTimeToMove = 0.2f;
 
 CAlien::CAlien() :
 	m_fDeltaTimeSinceMoved(0),
-	m_kiSpriteScale(3)
+	m_kiSpriteScale(3),
+	m_fShootChance(2.0f)
 {
 	s_iAliens++;
 	m_iFrameCount = s_iAliens;
@@ -61,9 +62,6 @@ bool CAlien::Initialise()
 		break;
 	case GHOST:
 		VALIDATE(CEntity::Initialise(IDB_BITMAP1, IDB_ALIENMASK, m_kiSpriteScale));
-		break;
-	case SAUCER:
-		VALIDATE(CEntity::Initialise(IDB_BITMAP3, IDB_ALIENMASK, m_kiSpriteScale));
 		break;
 	default:
 		break;
@@ -92,9 +90,8 @@ void CAlien::Process(float _fDeltaTick)
 		m_fX += s_fMoveAmount;
 		IncrementFrameCount();
 		
-		
-		float fRandomNum = s_randDist(s_randGen);
-		if (fRandomNum < 1.0f)
+		float fRandomNum = s_randDist(s_randGen) * _fDeltaTick;
+		if (fRandomNum < m_fShootChance * _fDeltaTick)
 		{
 			Shoot();
 		}
@@ -141,7 +138,7 @@ void CAlien::Shoot()
 	if (!IsAlienBelow())
 	{
 		CLevel* pLevel = CGame::GetInstance().GetLevel();
-		pLevel->SpawnBullet(m_fX, m_fY + m_pSprite->GetHeight() / 2, 0, 500, false);
+		pLevel->SpawnBullet(m_fX, m_fY + m_pSprite->GetHeight() / 2, 0, 250, false);
 	}
 }
 

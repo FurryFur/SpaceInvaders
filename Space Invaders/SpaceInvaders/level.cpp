@@ -25,6 +25,7 @@
 #include "Framecounter.h"
 #include "Shader.h"
 #include "Bunker.h"
+#include "Saucer.h"
 
 // This Include
 #include "Level.h"
@@ -43,8 +44,9 @@ CLevel::CLevel()
 , m_iWidth(0)
 , m_iHeight(0)
 , m_fpsCounter(0)
-, m_fDeltaTimeAliensMoved(0),
-m_iScore(0)
+, m_fDeltaTimeAliensMoved(0)
+, m_iScore(0)
+, m_fSaucerSpawnChance(10.0f)
 {
 	UpdateScoreText();
 }
@@ -109,7 +111,7 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
     const int kiNumAliens = 60;
 	const int kiAliensPerRow = 12;
 	const int kiStartX = 50;
-	const int kiStartY = 50;
+	const int kiStartY = 75;
     const int kiHGap = 0;
 	const int kiVGap = 0;
 
@@ -150,6 +152,11 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
 
 void CLevel::Draw()
 {
+	if (m_pSaucer != nullptr)
+	{
+		m_pSaucer->Draw();
+	}
+
 	for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
     {
         m_vecAliens[i]->Draw();
@@ -160,7 +167,11 @@ void CLevel::Draw()
 		m_vecBunkers[i]->Draw();
 	}
 
-    m_pPlayerShip->Draw();
+	if (m_pPlayerShip != nullptr)
+	{
+		m_pPlayerShip->Draw();
+	}
+
 	for (CBullet* pBullet : m_listpBullets)
 	{
 		pBullet->Draw();
@@ -182,10 +193,19 @@ void CLevel::Process(float _fDeltaTick)
     ProcessBulletPlayerShipCollision();
     ProcessBulletAlienCollision();
 	ProcessBulletBunkerCollision();
+	ProcessBulletSaucerCollision();
 
     ProcessCheckForWin();
 	ProcessBulletBounds();
 	ProcessAlienBounds(_fDeltaTick);
+
+	ProcessSaucerSpawn(_fDeltaTick);
+
+	if (m_pSaucer != nullptr)
+	{
+		m_pSaucer->Process(_fDeltaTick);
+		ProcessSaucerBounds(_fDeltaTick);
+	}
 
     for (unsigned int i = 0; i < m_vecAliens.size(); ++i)
     {
@@ -359,10 +379,6 @@ void CLevel::ProcessBulletAlienCollision()
 				{
 					SetScore(GetScore() + 40);
 				}
-				else if ((*itAlien)->GetType() == SAUCER)
-				{
-					SetScore(GetScore() + 200);
-				}
 				itAlien = m_vecAliens.erase(itAlien);
 				bCollision = true;
 			}
@@ -413,6 +429,34 @@ void CLevel::ProcessBulletBunkerCollision()
 		if (!bCollision)
 		{
 			++itBunker;
+		}
+	}
+}
+
+void CLevel::ProcessBulletSaucerCollision()
+{
+	bool bCollision = false;
+
+	for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end() && m_pSaucer != nullptr;)
+	{
+		bCollision = false;
+
+		if ((*itBullet)->IsPlayerBullet() && OverlapsBullet(m_pSaucer, *itBullet))
+		{
+			// Collision: destroy bullet and saucer
+			delete *itBullet;
+			delete m_pSaucer;
+			itBullet = m_listpBullets.erase(itBullet);
+			m_pSaucer = nullptr;
+
+			SetScore(GetScore() + 200);
+
+			bCollision = true;
+		}
+
+		if (!bCollision)
+		{
+			++itBullet;
 		}
 	}
 }
@@ -517,6 +561,21 @@ void CLevel::ProcessCheckForWin()
 	}
 }
 
+void CLevel::ProcessSaucerSpawn(float _fDeltaTick)
+{
+	static std::random_device                    s_randDev;
+	static std::mt19937                          s_randGen(s_randDev());
+	static std::uniform_real_distribution<float> s_randDist(0.0f, 100.0f);
+
+	if (m_pSaucer == nullptr && s_randDist(s_randGen) < m_fSaucerSpawnChance * _fDeltaTick)
+	{
+		m_pSaucer = new CSaucer();
+		m_pSaucer->Initialise();
+		m_pSaucer->SetY(m_pSaucer->GetHeight() / 2);
+		m_pSaucer->SetX(0);
+	}
+}
+
 void CLevel::ProcessBulletBounds()
 {
 	for (auto itBullet = m_listpBullets.begin(); itBullet != m_listpBullets.end();)
@@ -547,6 +606,16 @@ void CLevel::ProcessAlienBounds(float _fDeltaTick)
 				CAlien::ChangeMovementDirection();
 			}
 		}
+	}
+}
+
+void CLevel::ProcessSaucerBounds(float _fDeltaTick)
+{
+	if (m_pSaucer->GetX() - m_pSaucer->GetWidth() / 2 >= GetWidth()
+	 || m_pSaucer->GetX() + m_pSaucer->GetWidth() / 2 <= 0)
+	{
+		delete m_pSaucer;
+		m_pSaucer = nullptr;
 	}
 }
 

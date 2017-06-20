@@ -94,6 +94,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuButton.cpp" />
     <ClCompile Include="playership.cpp" />
+    <ClCompile Include="Saucer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="sprite.cpp" />
   </ItemGroup>
@@ -112,6 +113,7 @@
     <ClInclude Include="MenuButton.h" />
     <ClInclude Include="playership.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Saucer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="utils.h" />
