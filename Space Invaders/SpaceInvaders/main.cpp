@@ -23,9 +23,13 @@
 #include "Level.h"
 #include "Playership.h"
 #include "MainMenu.h"
+#include "resource.h"
 
 const int kiWidth = 960;
 const int kiHeight = 540;
+HWND g_hDebugDlg;
+HWND g_ComboBox;		 // Handle to the combo box.
+bool g_bDebugWindowActive;
 
 
 #define WINDOW_CLASS_NAME L"BSENGGFRAMEWORK"
@@ -58,6 +62,16 @@ WindowProc(HWND _hWnd, UINT _uiMsg, WPARAM _wParam, LPARAM _lParam)
 	case WM_LBUTTONUP:
 	{
 		CMainMenu::GetInstance().m_bClickReleaseToHandle = true;
+		return(0);
+		break;
+	}
+	case WM_KEYDOWN:
+	{
+		if (GetAsyncKeyState(VK_ESCAPE))
+		{
+			g_bDebugWindowActive = true;
+			ShowWindow(g_hDebugDlg, SW_SHOWNORMAL);
+		}
 		return(0);
 		break;
 	}
@@ -114,6 +128,71 @@ CreateAndRegisterWindow(HINSTANCE _hInstance, int _iWidth, int _iHeight, const w
 	return (hwnd);
 }
 
+BOOL CALLBACK DebugDlgProc(HWND _hwnd,
+	UINT _msg,
+	WPARAM _wparam,
+	LPARAM _lparam)
+{
+	switch (_msg)
+	{
+	case WM_CLOSE:
+	{
+		ShowWindow(_hwnd, SW_HIDE);
+		g_bDebugWindowActive = false;
+		return TRUE;
+		break;
+	}
+	case WM_COMMAND:
+	{
+		switch (LOWORD(_wparam))
+		{
+		case IDOK:
+		{
+			switch (ComboBox_GetCurSel(g_ComboBox))		// Switch based on what compute mode is selected
+			{
+			case(0):
+			{
+				CGame::GetInstance().GetLevel()->SwapBackground(4);
+				break;
+			}
+			case(1):
+			{
+				CGame::GetInstance().GetLevel()->SwapBackground(1);
+				break;
+			}
+			case(2):
+			{
+				CGame::GetInstance().GetLevel()->SwapBackground(3);
+				break;
+			}
+			case(3):
+			{
+				CGame::GetInstance().GetLevel()->SwapBackground(5);
+				break;
+			}
+			case(4):
+			{
+				CGame::GetInstance().GetLevel()->SwapBackground(2);
+				break;
+			}
+			default:
+				break;
+			}
+
+			ShowWindow(_hwnd, SW_HIDE);
+			g_bDebugWindowActive = false;
+			break;
+		}
+		default:
+			break;
+		}
+		break;
+	}
+	default:
+		break;
+	}
+	return FALSE;
+}
 int WINAPI
 WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdline, int _iCmdshow)
 {
@@ -122,7 +201,19 @@ WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdline, int _i
 	ZeroMemory(&msg, sizeof(MSG));
 
 
-	HWND hwnd = CreateAndRegisterWindow(_hInstance, kiWidth, kiHeight, L"Breakout");
+	HWND hwnd = CreateAndRegisterWindow(_hInstance, kiWidth, kiHeight, L"SpaceInvaders");
+
+	// Related to the debug window
+	g_hDebugDlg = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DIALOG1), hwnd, DebugDlgProc);
+	g_bDebugWindowActive = false;
+	g_ComboBox = GetDlgItem(g_hDebugDlg, IDC_COMBO1);
+
+	SendMessage(g_ComboBox, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"GreenDream"));
+	SendMessage(g_ComboBox, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"SwedishSmash"));
+	SendMessage(g_ComboBox, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"PurplePower"));
+	SendMessage(g_ComboBox, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"BlazingBlue"));
+	SendMessage(g_ComboBox, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"RockingRocks"));
+	ComboBox_SetCurSel(g_ComboBox, 0);
 
 	CGame& rGame = CGame::GetInstance();
 	
@@ -144,7 +235,10 @@ WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdline, int _i
 		}
 		else
 		{
-			rGame.ExecuteOneFrame();
+			if (!g_bDebugWindowActive)
+			{
+				rGame.ExecuteOneFrame();
+			}
 		}
 	}
 
