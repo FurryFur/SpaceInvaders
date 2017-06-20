@@ -62,12 +62,14 @@ public:
 
 protected:
     void ProcessBulletPlayerShipCollision();
+	void ProcessAlienPlayerCollision();
     void ProcessBulletAlienCollision();
 	void ProcessBulletBunkerCollision();
 	void ProcessBulletSaucerCollision();
 	void CreateBunker(int _iX, int _iY);
 	bool OverlapsBullet(const CEntity*);
 	bool OverlapsBullet(const CEntity*, const CBullet*);
+	bool OverlapsAlien(const CEntity*, const CAlien*);
 	bool IsOutsideOfLevel(const CEntity*);
     void ProcessCheckForWin();
 	void ProcessSaucerSpawn(float _fDeltaTick);

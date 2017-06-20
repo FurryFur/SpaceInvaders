@@ -194,6 +194,7 @@ void CLevel::Process(float _fDeltaTick)
     ProcessBulletAlienCollision();
 	ProcessBulletBunkerCollision();
 	ProcessBulletSaucerCollision();
+	ProcessAlienPlayerCollision();
 
     ProcessCheckForWin();
 	ProcessBulletBounds();
@@ -291,6 +292,33 @@ bool CLevel::OverlapsBullet(const CEntity* _pEntity, const CBullet* _pBullet)
 	}
 }
 
+bool CLevel::OverlapsAlien(const CEntity *_pEntity, const CAlien *_pAlien)
+{
+	float fAlienW = _pAlien->GetWidth();
+	float fAlienH = _pAlien->GetHeight();
+
+	float fAlienX = _pAlien->GetX();
+	float fAlienY = _pAlien->GetY();
+
+	float fEntityX = _pEntity->GetX();
+	float fEntityY = _pEntity->GetY();
+
+	float fEntityH = _pEntity->GetHeight();
+	float fEntityW = _pEntity->GetWidth();
+
+	if ((fAlienX + fAlienW > fEntityX - fEntityW / 2) && //Bullet.right > Entity.left
+		(fAlienX - fAlienW < fEntityX + fEntityW / 2) && //Bullet.left < Entity.right
+		(fAlienY + fAlienH > fEntityY - fEntityH / 2) && //Bullet.bottom > Entity.top
+		(fAlienY - fAlienH < fEntityY + fEntityH / 2))  //Bullet.top < Entity.bottom
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool CLevel::IsOutsideOfLevel(const CEntity * _pEntity)
 {
 	if (_pEntity->GetX() + _pEntity->GetWidth() / 2 >= GetWidth() || _pEntity->GetX() - _pEntity->GetWidth() / 2 <= 0)
@@ -351,6 +379,21 @@ void CLevel::ProcessBulletPlayerShipCollision()
 		}
 
 		++it;
+	}
+}
+
+void CLevel::ProcessAlienPlayerCollision()
+{
+	for (auto it = m_vecAliens.begin(); it != m_vecAliens.end();)
+	{
+		CAlien* pAlien = *it;
+
+		if (OverlapsAlien(m_pPlayerShip, pAlien))
+		{
+			m_pPlayerShip->SetLives(0);
+			CGame::GetInstance().SetLevel(CGame::ELEVEL::MENU);
+		}
+		it++;
 	}
 }
 

@@ -92,12 +92,11 @@ void CMenuButton::ButtonPressed(std::vector<CMenuButton*> _pvecMenuButtons)
 				pmenButton->SetIsActive(false);
 			}
 		}
-		// Draw scores
 	}
 		break;
 	case QUIT:
 	{
-		// Quit
+		PostQuitMessage(0);
 	}
 		break;
 	case BACK:
