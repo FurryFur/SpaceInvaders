@@ -27,8 +27,7 @@ enum EALIENTYPE
 {
 	JELLYFISH,
 	SPIDER,
-	GHOST,
-	SAUCER
+	GHOST
 };
 // Constants
 
@@ -69,6 +68,7 @@ protected:
 
 	int m_iFrameCount;
 	float m_fDeltaTimeSinceMoved;
+	float m_fShootChance;
 	const int m_kiSpriteScale;
 
 	static float s_fMoveAmount;

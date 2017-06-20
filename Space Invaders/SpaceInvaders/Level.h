@@ -36,6 +36,7 @@ class CBunker;
 class CFPSCounter;
 class CShader;
 class CEntity;
+class CSaucer;
 
 class CLevel
 {
@@ -63,14 +64,17 @@ protected:
     void ProcessBulletPlayerShipCollision();
     void ProcessBulletAlienCollision();
 	void ProcessBulletBunkerCollision();
+	void ProcessBulletSaucerCollision();
 	void CreateBunker(int _iX, int _iY);
 	bool OverlapsBullet(const CEntity*);
 	bool OverlapsBullet(const CEntity*, const CBullet*);
 	bool IsOutsideOfLevel(const CEntity*);
     void ProcessCheckForWin();
+	void ProcessSaucerSpawn(float _fDeltaTick);
 
     void ProcessBulletBounds();
 	void ProcessAlienBounds(float _fDeltaTick);
+	void ProcessSaucerBounds(float _fDeltaTick);
 
     void UpdateScoreText();
     void DrawScore();
@@ -90,11 +94,12 @@ protected:
     std::list<CBullet*> m_listpBullets;
 	std::list<CEntity*> m_vecpDestroyedEntities;
     CPlayerShip* m_pPlayerShip;
+	CSaucer* m_pSaucer;
     std::vector<CAlien*> m_vecAliens;
 	std::vector<CBunker*> m_vecBunkers;
 	CFPSCounter* m_fpsCounter;
 	float m_fDeltaTimeAliensMoved;
-
+	float m_fSaucerSpawnChance;
 
     int m_iWidth;
     int m_iHeight;
