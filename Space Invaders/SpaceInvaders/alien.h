@@ -6,16 +6,14 @@
 //
 // (c) 2016 Media Design School
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: alien.h
+// Description	: alien header file
+// Authors		: Lance Chaney & Sebastian Tengdahl
+// Mail			: lance.cha7337@mediadesign.school.nz
+//                sebastian.ten7230@mediadesign.school.nz
 //
-
-#pragma once
-
-#if !defined(__ALIEN_H__)
-#define __ALIEN_H__
+#ifndef ALIEN_H
+#define ALIEN_H
 
 // Library Includes
 

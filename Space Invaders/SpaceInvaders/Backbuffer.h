@@ -6,10 +6,11 @@
 //
 // (c) 2016 Media Design School
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: backbuffer.h
+// Description	: backbuffer header file
+// Authors		: Lance Chaney & Sebastian Tengdahl
+// Mail			: lance.cha7337@mediadesign.school.nz
+//                sebastian.ten7230@mediadesign.school.nz
 //
 
 #pragma once
