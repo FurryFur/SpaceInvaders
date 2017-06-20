@@ -51,6 +51,7 @@ public:
 
 	static void ChangeMovementDirection();
 	static float GetTimeToMove();
+	void SetTimeToMove(float _fNewTime);
 	static float GetMoveAmount();
 
 protected:
@@ -73,7 +74,7 @@ protected:
 
 	static float s_fMoveAmount;
 	EALIENTYPE m_eType;
-	static const float s_kfTimeToMove;
+	static float s_kfTimeToMove;
 	static int s_iAliens;
 
 private:

@@ -24,6 +24,7 @@
 #include "Playership.h"
 #include "MainMenu.h"
 #include "resource.h"
+#include "alien.h"
 
 const int kiWidth = 960;
 const int kiHeight = 540;
@@ -144,6 +145,10 @@ BOOL CALLBACK DebugDlgProc(HWND _hwnd,
 	}
 	case WM_COMMAND:
 	{
+		static float s_fAlienSpeed = 0.2f;
+		static float s_fShotSpeed; // Set to the basic speed 
+		static float s_fAlienShotSpeed; // Set to the basic speed 
+
 		switch (LOWORD(_wparam))
 		{
 		case IDOK:
@@ -181,6 +186,59 @@ BOOL CALLBACK DebugDlgProc(HWND _hwnd,
 
 			ShowWindow(_hwnd, SW_HIDE);
 			g_bDebugWindowActive = false;
+			CGame::GetInstance().GetLevel()->GetAlien(0)->SetTimeToMove(s_fAlienSpeed);
+
+			break;
+		}
+		// Radio Button Group 1
+		case IDC_RADIO1:
+		{
+			// AlienSpeed Slow
+			s_fAlienSpeed = 0.8;
+			break;
+		}
+		case IDC_RADIO2:
+		{
+			// AlienSpeed Medium
+			s_fAlienSpeed = 0.2;
+			break;
+		}
+		case IDC_RADIO3:
+		{
+			// AlienSpeed Fast
+			s_fAlienSpeed = 0.05;
+			break;
+		}
+		// Radio Button Group 2
+		case IDC_RADIO4:
+		{
+			// Shot Slow
+			break;
+		}
+		case IDC_RADIO5:
+		{
+			// Shot Medium
+			break;
+		}
+		case IDC_RADIO6:
+		{
+			// Shot Fast
+			break;
+		}
+		// Radio Button Group 3
+		case IDC_RADIO7:
+		{
+			// AlienShotSpeed slow
+			break;
+		}
+		case IDC_RADIO8:
+		{
+			// AlienShotSpeed medium
+			break;
+		}
+		case IDC_RADIO9:
+		{
+			// AlienShotSpeed fast
 			break;
 		}
 		default:
