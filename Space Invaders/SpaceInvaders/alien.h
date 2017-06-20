@@ -75,7 +75,7 @@ protected:
 
 	static float s_fMoveAmount;
 	EALIENTYPE m_eType;
-	static float s_kfTimeToMove;
+	static float s_fTimeToMove;
 	static int s_iAliens;
 	static const float s_kfMoveDownAmount;
 

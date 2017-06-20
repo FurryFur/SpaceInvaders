@@ -35,7 +35,7 @@
 int CAlien::s_iAliens = 0;
 float CAlien::s_fMoveAmount = 8;
 const float CAlien::s_kfMoveDownAmount = 10.0f;
-float CAlien::s_kfTimeToMove = 0.2f;
+float CAlien::s_fTimeToMove = 0.2f;
 
 CAlien::CAlien() :
 	m_fDeltaTimeSinceMoved(0),
@@ -86,7 +86,7 @@ void CAlien::Process(float _fDeltaTick)
 
 	m_fDeltaTimeSinceMoved += _fDeltaTick;
 
-	if (m_fDeltaTimeSinceMoved >= s_kfTimeToMove)
+	if (m_fDeltaTimeSinceMoved >= s_fTimeToMove)
 	{
 		m_fX += s_fMoveAmount;
 		IncrementFrameCount();
@@ -126,7 +126,7 @@ void CAlien::ChangeMovementDirection()
 
 float CAlien::GetTimeToMove()
 {
-	return s_kfTimeToMove;
+	return s_fTimeToMove;
 }
 
 float CAlien::GetMoveAmount()
@@ -141,7 +141,7 @@ float CAlien::GetMoveDownAmount()
 
 void CAlien::SetTimeToMove(float _fNewTime)
 {
-	s_kfTimeToMove = _fNewTime;
+	s_fTimeToMove = _fNewTime;
 }
 
 void CAlien::Shoot()
