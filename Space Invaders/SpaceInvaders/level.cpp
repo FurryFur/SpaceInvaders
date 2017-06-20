@@ -598,12 +598,23 @@ void CLevel::ProcessAlienBounds(float _fDeltaTick)
 
 	if (m_fDeltaTimeAliensMoved >= CAlien::GetTimeToMove())
 	{
+		bool bHitWall = false;
 		for (CAlien* pAlien : m_vecAliens)
 		{
 			if (pAlien->GetX() + pAlien->GetWidth() / 2 + CAlien::GetMoveAmount() >= GetWidth()
 			 || pAlien->GetX() - pAlien->GetWidth() / 2 + CAlien::GetMoveAmount() <= 0)
 			{
 				CAlien::ChangeMovementDirection();
+				bHitWall = true;
+
+				break;
+			}
+		}
+		if (bHitWall)
+		{
+			for (CAlien* pAlien : m_vecAliens)
+			{
+				pAlien->SetY(pAlien->GetY() + CAlien::GetMoveDownAmount());
 			}
 		}
 	}
