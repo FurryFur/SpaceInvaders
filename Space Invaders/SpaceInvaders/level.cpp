@@ -343,7 +343,7 @@ void CLevel::ProcessBulletAlienCollision()
 		{
 			bCollision = false;
 
-			if (OverlapsBullet(*itAlien, *itBullet))
+			if ((*itBullet)->IsPlayerBullet() && OverlapsBullet(*itAlien, *itBullet))
 			{
 				// Collision: destroy bullet and alien
  				itBullet = m_listpBullets.erase(itBullet);
