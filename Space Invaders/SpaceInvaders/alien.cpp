@@ -34,6 +34,7 @@
 
 int CAlien::s_iAliens = 0;
 float CAlien::s_fMoveAmount = 8;
+const float CAlien::s_kfMoveDownAmount = 10.0f;
 float CAlien::s_kfTimeToMove = 0.2f;
 
 CAlien::CAlien() :
@@ -131,6 +132,11 @@ float CAlien::GetTimeToMove()
 float CAlien::GetMoveAmount()
 {
 	return s_fMoveAmount;
+}
+
+float CAlien::GetMoveDownAmount()
+{
+	return s_kfMoveDownAmount;
 }
 
 void CAlien::SetTimeToMove(float _fNewTime)

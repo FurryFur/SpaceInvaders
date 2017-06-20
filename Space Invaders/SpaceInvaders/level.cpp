@@ -317,7 +317,8 @@ void CLevel::ProcessBulletPlayerShipCollision()
 			// Go to game over screen if the player is dead
 			if (m_pPlayerShip->GetLives() <= 0)
 			{
-
+				// TODO: Game over screen and high score
+				CGame::GetInstance().SetLevel(CGame::ELEVEL::MENU);
 			}
 			else
 			{
@@ -339,7 +340,7 @@ void CLevel::ProcessBulletPlayerShipCollision()
 						iDirToggle *= -1;
 						m_pPlayerShip->SetX((m_pPlayerShip->GetX() + 2 * m_pPlayerShip->GetWidth() * iDirToggle));
 					}
-				}	
+				}
 			}
 
 			// Destroy the alien bullet
@@ -598,12 +599,23 @@ void CLevel::ProcessAlienBounds(float _fDeltaTick)
 
 	if (m_fDeltaTimeAliensMoved >= CAlien::GetTimeToMove())
 	{
+		bool bHitWall = false;
 		for (CAlien* pAlien : m_vecAliens)
 		{
 			if (pAlien->GetX() + pAlien->GetWidth() / 2 + CAlien::GetMoveAmount() >= GetWidth()
 			 || pAlien->GetX() - pAlien->GetWidth() / 2 + CAlien::GetMoveAmount() <= 0)
 			{
 				CAlien::ChangeMovementDirection();
+				bHitWall = true;
+
+				break;
+			}
+		}
+		if (bHitWall)
+		{
+			for (CAlien* pAlien : m_vecAliens)
+			{
+				pAlien->SetY(pAlien->GetY() + CAlien::GetMoveDownAmount());
 			}
 		}
 	}
