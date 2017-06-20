@@ -135,6 +135,8 @@
     <Image Include="Sprites\BunkerTurnRight.bmp" />
     <Image Include="Sprites\ButtonAlpha.bmp" />
     <Image Include="Sprites\Ghost looking alien.bmp" />
+    <Image Include="Sprites\Heart.bmp" />
+    <Image Include="Sprites\HeartMask.bmp" />
     <Image Include="Sprites\HighScoreButton.bmp" />
     <Image Include="Sprites\Jellyfish looking alien.bmp" />
     <Image Include="Sprites\PaddleMask.bmp" />
