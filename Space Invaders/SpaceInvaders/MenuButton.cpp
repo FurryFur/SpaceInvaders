@@ -7,7 +7,7 @@
 
 CMenuButton::CMenuButton(BUTTONTYPE _eButtonType):
 	m_eButtonType(_eButtonType),
-	m_kiSpriteScale(3)
+	m_kiSpriteScale(1)
 {
 }
 

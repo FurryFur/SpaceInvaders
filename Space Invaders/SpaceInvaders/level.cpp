@@ -110,8 +110,8 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
 	const int kiAliensPerRow = 12;
 	const int kiStartX = 50;
 	const int kiStartY = 50;
-    const int kiHGap = 20;
-	const int kiVGap = 20;
+    const int kiHGap = 0;
+	const int kiVGap = 0;
 
     for (int i = 0; i < kiNumAliens; ++i)
     {
