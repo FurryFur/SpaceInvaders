@@ -54,6 +54,7 @@ public:
 	void SetTimeToMove(float _fNewTime);
 	static float GetMoveAmount();
 	static float GetMoveDownAmount();
+	void SetShootChance(float _fNewChance);
 
 protected:
 
@@ -70,9 +71,9 @@ protected:
 
 	int m_iFrameCount;
 	float m_fDeltaTimeSinceMoved;
-	float m_fShootChance;
 	const int m_kiSpriteScale;
 
+	static float m_fShootChance;
 	static float s_fMoveAmount;
 	EALIENTYPE m_eType;
 	static float s_fTimeToMove;

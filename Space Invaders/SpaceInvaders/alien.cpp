@@ -34,13 +34,13 @@
 
 int CAlien::s_iAliens = 0;
 float CAlien::s_fMoveAmount = 8;
-const float CAlien::s_kfMoveDownAmount = 10.0f;
+const float CAlien::s_kfMoveDownAmount = 20.0f;
 float CAlien::s_fTimeToMove = 0.2f;
+float CAlien::m_fShootChance = 2.0f;
 
 CAlien::CAlien() :
 	m_fDeltaTimeSinceMoved(0),
-	m_kiSpriteScale(3),
-	m_fShootChance(2.0f)
+	m_kiSpriteScale(3)
 {
 	s_iAliens++;
 	m_iFrameCount = s_iAliens;
@@ -137,6 +137,11 @@ float CAlien::GetMoveAmount()
 float CAlien::GetMoveDownAmount()
 {
 	return s_kfMoveDownAmount;
+}
+
+void CAlien::SetShootChance(float _fNewChance)
+{
+	m_fShootChance = _fNewChance;
 }
 
 void CAlien::SetTimeToMove(float _fNewTime)

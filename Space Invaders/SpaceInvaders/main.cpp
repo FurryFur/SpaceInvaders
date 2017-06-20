@@ -146,8 +146,8 @@ BOOL CALLBACK DebugDlgProc(HWND _hwnd,
 	case WM_COMMAND:
 	{
 		static float s_fAlienSpeed = 0.2f;
-		static float s_fShotSpeed; // Set to the basic speed 
-		static float s_fAlienShotSpeed; // Set to the basic speed 
+		static float s_fShootSpeed = 1; // Set to the basic speed 
+		static float s_fAlienShootSpeed = 2; // Set to the basic speed 
 
 		switch (LOWORD(_wparam))
 		{
@@ -186,7 +186,10 @@ BOOL CALLBACK DebugDlgProc(HWND _hwnd,
 
 			ShowWindow(_hwnd, SW_HIDE);
 			g_bDebugWindowActive = false;
+
 			CGame::GetInstance().GetLevel()->GetAlien(0)->SetTimeToMove(s_fAlienSpeed);
+			CGame::GetInstance().GetLevel()->GetPlayerShip()->SetFireRate(s_fShootSpeed);
+			CGame::GetInstance().GetLevel()->GetAlien(0)->SetShootChance(s_fAlienShootSpeed);
 
 			break;
 		}
@@ -212,33 +215,39 @@ BOOL CALLBACK DebugDlgProc(HWND _hwnd,
 		// Radio Button Group 2
 		case IDC_RADIO4:
 		{
-			// Shot Slow
+			// Shoot Slow
+			s_fShootSpeed = 0.2;
 			break;
 		}
 		case IDC_RADIO5:
 		{
-			// Shot Medium
+			// Shoot Medium
+			s_fShootSpeed = 1;
 			break;
 		}
 		case IDC_RADIO6:
 		{
-			// Shot Fast
+			// Shoot Fast
+			s_fShootSpeed = 5;
 			break;
 		}
 		// Radio Button Group 3
 		case IDC_RADIO7:
 		{
-			// AlienShotSpeed slow
+			// AlienShootSpeed slow
+			s_fAlienShootSpeed = 1;
 			break;
 		}
 		case IDC_RADIO8:
 		{
-			// AlienShotSpeed medium
+			// AlienShootSpeed medium
+			s_fAlienShootSpeed = 2;
 			break;
 		}
 		case IDC_RADIO9:
 		{
-			// AlienShotSpeed fast
+			// AlienShootSpeed fast
+			s_fAlienShootSpeed = 4;
 			break;
 		}
 		default:
@@ -271,7 +280,7 @@ WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdline, int _i
 	SendMessage(g_ComboBox, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"PurplePower"));
 	SendMessage(g_ComboBox, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"BlazingBlue"));
 	SendMessage(g_ComboBox, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"RockingRocks"));
-	ComboBox_SetCurSel(g_ComboBox, 0);
+	ComboBox_SetCurSel(g_ComboBox, 2);
 
 	CGame& rGame = CGame::GetInstance();
 	

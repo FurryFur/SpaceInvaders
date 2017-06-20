@@ -43,6 +43,8 @@ public:
 	void SetLives(size_t);
 	size_t GetLives() const;
 
+	void SetFireRate(float _fNewRate);
+
 
 protected:
 	float m_fFireRate; // Per Second

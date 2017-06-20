@@ -128,3 +128,8 @@ size_t CPlayerShip::GetLives() const
 {
 	return m_szLives;
 }
+
+void CPlayerShip::SetFireRate(float _fNewRate)
+{
+	m_fFireRate = _fNewRate;
+}
