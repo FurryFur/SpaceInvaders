@@ -199,57 +199,57 @@ BOOL CALLBACK DebugDlgProc(HWND _hwnd,
 		case IDC_RADIO1:
 		{
 			// AlienSpeed Slow
-			s_fAlienSpeed = 0.8;
+			s_fAlienSpeed = 0.8f;
 			break;
 		}
 		case IDC_RADIO2:
 		{
 			// AlienSpeed Medium
-			s_fAlienSpeed = 0.2;
+			s_fAlienSpeed = 0.2f;
 			break;
 		}
 		case IDC_RADIO3:
 		{
 			// AlienSpeed Fast
-			s_fAlienSpeed = 0.05;
+			s_fAlienSpeed = 0.05f;
 			break;
 		}
 		// Radio Button Group 2
 		case IDC_RADIO4:
 		{
 			// Shoot Slow
-			s_fShootSpeed = 0.2;
+			s_fShootSpeed = 0.2f;
 			break;
 		}
 		case IDC_RADIO5:
 		{
 			// Shoot Medium
-			s_fShootSpeed = 1;
+			s_fShootSpeed = 1.0f;
 			break;
 		}
 		case IDC_RADIO6:
 		{
 			// Shoot Fast
-			s_fShootSpeed = 5;
+			s_fShootSpeed = 5.0f;
 			break;
 		}
 		// Radio Button Group 3
 		case IDC_RADIO7:
 		{
 			// AlienShootSpeed slow
-			s_fAlienShootSpeed = 1;
+			s_fAlienShootSpeed = 1.0f;
 			break;
 		}
 		case IDC_RADIO8:
 		{
 			// AlienShootSpeed medium
-			s_fAlienShootSpeed = 2;
+			s_fAlienShootSpeed = 2.0f;
 			break;
 		}
 		case IDC_RADIO9:
 		{
 			// AlienShootSpeed fast
-			s_fAlienShootSpeed = 4;
+			s_fAlienShootSpeed = 4.0f;
 			break;
 		}
 		default:
