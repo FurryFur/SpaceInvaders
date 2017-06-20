@@ -15,6 +15,17 @@ m_bClickReleaseToHandle(false)
 
 CMainMenu::~CMainMenu()
 {
+	if (s_pMainMenu != 0)
+	{
+		delete s_pMainMenu;
+	}
+	for (CMenuButton* pbutButton : m_pvecMenuButtons)
+	{
+		if (pbutButton != nullptr)
+		{
+			delete pbutButton;
+		}
+	}
 }
 
 bool CMainMenu::Initialise(int _iWidth, int _iHeight, HWND _hMainWindow)
@@ -43,7 +54,7 @@ bool CMainMenu::Initialise(int _iWidth, int _iHeight, HWND _hMainWindow)
 	for (CMenuButton* pmenButton: m_pvecMenuButtons)
 	{
 		pmenButton->Initialise();
-		pmenButton->SetX((GetWidth() / 2) - (pmenButton->GetWidth()/2));
+		pmenButton->SetX(GetWidth() / 2);
 		pmenButton->SetY(iButtonOffset * i);
 		++i;
 	}
