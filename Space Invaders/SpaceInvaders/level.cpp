@@ -72,6 +72,11 @@ CLevel::~CLevel()
 	}
     m_listpBullets.clear();
 
+	if (m_pSaucer != nullptr)
+	{
+		delete m_pSaucer;
+	}
+
 	delete m_fpsCounter;
 	m_fpsCounter = 0;
 
@@ -99,8 +104,8 @@ bool CLevel::Initialise(int _iWidth, int _iHeight)
 
     // Set the PlayerShip's position to be centered on the x, 
     // and a little bit up from the bottom of the window.
-    m_pPlayerShip->SetX(_iWidth / 2.0f);
-    m_pPlayerShip->SetY(_iHeight - ( 1.5 * m_pPlayerShip->GetHeight()));
+    m_pPlayerShip->SetX(static_cast<float>(_iWidth / 2.0f));
+    m_pPlayerShip->SetY(static_cast<float>(_iHeight - ( 1.5 * m_pPlayerShip->GetHeight())));
 
 	// Spawns the bunkers at the desired positions
 	int iBunkerCentreX = 32;
@@ -373,6 +378,7 @@ void CLevel::ProcessBulletPlayerShipCollision()
 			}
 
 			// Destroy the alien bullet
+			delete *it;
 			it = m_listpBullets.erase(it);
 
 			// Skip incrementing iterator
@@ -411,6 +417,7 @@ void CLevel::ProcessBulletAlienCollision()
 			if ((*itBullet)->IsPlayerBullet() && OverlapsBullet(*itAlien, *itBullet))
 			{
 				// Collision: destroy bullet and alien
+				delete *itBullet;
  				itBullet = m_listpBullets.erase(itBullet);
 				if ((*itAlien)->GetType() == GHOST)
 				{
@@ -424,6 +431,7 @@ void CLevel::ProcessBulletAlienCollision()
 				{
 					SetScore(GetScore() + 40);
 				}
+				delete *itAlien;
 				itAlien = m_vecAliens.erase(itAlien);
 				bCollision = true;
 			}
@@ -453,10 +461,12 @@ void CLevel::ProcessBulletBunkerCollision()
 			if (OverlapsBullet(*itBunker, *itBullet))
 			{
 				// Collision: destroy bullet and damage bunker
+				delete *itBullet;
 				itBullet = m_listpBullets.erase(itBullet);
 
 				if ((*itBunker)->GetCurrentFrame() == 3)
 				{
+					delete *itBullet;
 					itBunker = m_vecBunkers.erase(itBunker);
 				}
 				else
@@ -628,6 +638,7 @@ void CLevel::ProcessBulletBounds()
 		if ((*itBullet)->GetY() < 0 || (*itBullet)->GetY() > GetHeight())
 		{
 			// Outside of screen: destroy bullet
+			delete *itBullet;
 			itBullet = m_listpBullets.erase(itBullet);
 		}
 		else

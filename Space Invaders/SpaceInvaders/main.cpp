@@ -27,6 +27,7 @@
 #include "resource.h"
 #include "alien.h"
 
+
 const int kiWidth = 960;
 const int kiHeight = 540;
 HWND g_hDebugDlg;

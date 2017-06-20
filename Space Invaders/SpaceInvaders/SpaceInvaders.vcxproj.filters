@@ -219,5 +219,11 @@
     <Image Include="Sprites\QuitButton.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Sprites\Heart.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\HeartMask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
