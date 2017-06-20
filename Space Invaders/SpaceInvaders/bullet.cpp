@@ -30,6 +30,7 @@
 CBullet::CBullet()
 : m_fVelocityX(0.0f)
 , m_fVelocityY(0.0f)
+, m_kiSpriteScale(1)
 {
 
 }
@@ -42,7 +43,7 @@ CBullet::~CBullet()
 bool
 CBullet::Initialise(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocityY, bool _bPlayerBullet)
 {
-    VALIDATE(CEntity::Initialise(IDB_BULLETSPRITE, IDB_BULLETMASK));
+    VALIDATE(CEntity::Initialise(IDB_BULLETSPRITE, IDB_BULLETMASK, m_kiSpriteScale));
     
     m_fX = _fPosX;
     m_fY = _fPosY;

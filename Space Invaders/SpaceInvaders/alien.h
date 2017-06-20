@@ -69,6 +69,8 @@ protected:
 
 	int m_iFrameCount;
 	float m_fDeltaTimeSinceMoved;
+	const int m_kiSpriteScale;
+
 	static float s_fMoveAmount;
 	EALIENTYPE m_eType;
 	static const float s_kfTimeToMove;

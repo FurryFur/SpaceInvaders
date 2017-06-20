@@ -5,9 +5,9 @@
 #include "sprite.h"
 #include "game.h"
 
-
 CMenuButton::CMenuButton(BUTTONTYPE _eButtonType):
-	m_eButtonType(_eButtonType)
+	m_eButtonType(_eButtonType),
+	m_kiSpriteScale(3)
 {
 }
 
@@ -22,22 +22,22 @@ bool CMenuButton::Initialise()
 	{
 	case PLAY:
 	{
-		VALIDATE(CEntity::Initialise(IDB_PLAYBUTTON, IDB_BUTTONALPHA));
+		VALIDATE(CEntity::Initialise(IDB_PLAYBUTTON, IDB_BUTTONALPHA, m_kiSpriteScale));
 	}
 		break;
 	case HIGHSCORE:
 	{
-		VALIDATE(CEntity::Initialise(IDB_HISCOREBUTTON, IDB_BUTTONALPHA));
+		VALIDATE(CEntity::Initialise(IDB_HISCOREBUTTON, IDB_BUTTONALPHA, m_kiSpriteScale));
 	}
 		break;
 	case QUIT:
 	{
-		VALIDATE(CEntity::Initialise(IDB_QUITBUTTON, IDB_BUTTONALPHA));
+		VALIDATE(CEntity::Initialise(IDB_QUITBUTTON, IDB_BUTTONALPHA, m_kiSpriteScale));
 	}
 		break;
 	case BACK:
 	{
-		VALIDATE(CEntity::Initialise(IDB_BACKBUTTON, IDB_BUTTONALPHA));
+		VALIDATE(CEntity::Initialise(IDB_BACKBUTTON, IDB_BUTTONALPHA, m_kiSpriteScale));
 	}
 		break;
 	default:
@@ -52,7 +52,7 @@ void CMenuButton::Draw()
 {
 	if (GetIsActive())
 	{
-		CEntity::DrawAnimated(2, 1 + GetIsSelected(), 1);
+		CEntity::DrawAnimated(2, 1 + GetIsSelected());
 	}
 }
 

@@ -35,11 +35,11 @@ public:
 	CEntity();
 	virtual ~CEntity();
 
-	virtual bool Initialise(const int _kiSpriteID, const int _kiMaskID);
+	virtual bool Initialise(const int _kiSpriteID, const int _kiMaskID, int _iSpriteScale);
 
 	virtual void Draw() = 0;
 	virtual void DrawShader();
-	virtual void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw, int _iScaler);
+	virtual void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw);
 	virtual void Process(float _fDeltaTick);
 
 	void SetX(float _f);
@@ -49,8 +49,8 @@ public:
 	float GetY() const;
 	CSprite* GetSprite();
 
-	float GetHeight() const;
-	float GetWidth() const;
+	int GetHeight() const;
+	int GetWidth() const;
 
 protected:
 

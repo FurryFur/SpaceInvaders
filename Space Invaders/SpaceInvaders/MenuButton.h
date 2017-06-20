@@ -35,6 +35,7 @@ public:
 private:
 	bool m_bIsActive;
 	bool m_bIsSelected;
+	const int m_kiSpriteScale;
 
 protected:
 	BUTTONTYPE m_eButtonType;

@@ -50,6 +50,7 @@ protected:
 	size_t m_szLives;
 	const size_t m_kszMaxLives;
 	CSprite* m_pSpriteLife;
+	const int m_kiSpriteScale;
 
 private:
     CPlayerShip(const CPlayerShip& _kr);

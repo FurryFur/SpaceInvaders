@@ -35,7 +35,8 @@ CSprite::CSprite()
 , m_iY(0),
 m_iScreenWidth(960),
 m_iScreenHeight(540),
-m_iFrames(1)
+m_iFrames(1),
+m_iScale(1)
 {
     ++s_iRefCount;
 }
@@ -55,7 +56,7 @@ CSprite::~CSprite()
 }
 
 bool
-CSprite::Initialise(int _iSpriteResourceID, int _iMaskResourceID)
+CSprite::Initialise(int _iSpriteResourceID, int _iMaskResourceID, int _iScale)
 {
     HINSTANCE hInstance = CGame::GetInstance().GetAppInstance();
 
@@ -72,61 +73,70 @@ CSprite::Initialise(int _iSpriteResourceID, int _iMaskResourceID)
     GetObject(m_hSprite, sizeof(BITMAP), &m_bitmapSprite);
     GetObject(m_hMask, sizeof(BITMAP), &m_bitmapMask);
 
+	m_iScale = _iScale;
+
     return (true);
 }
 
 void
 CSprite::Draw()
 {
-    int iW = GetWidth();
-    int iH = GetHeight();
+	int iWSrc = GetWidth() / m_iScale;
+	int iHSrc = GetHeight() / m_iScale;
 
-    int iX = m_iX - (iW / 2);
-    int iY = m_iY - (iH / 2);
+	int iWDest = GetWidth();
+	int iHDest = GetHeight();
 
-    CBackBuffer* pBackBuffer = CGame::GetInstance().GetBackBuffer();
-
-    HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hMask);
-
-	BitBlt(pBackBuffer->GetBFDC(), iX, iY, iW, iH, s_hSharedSpriteDC, 0, 0, SRCAND);
-    //StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iW * (400 / m_iScreenWidth), iH * (400 / m_iScreenHeight), s_hSharedSpriteDC, 0, 0, iW, iH, SRCAND);
-
-    SelectObject(s_hSharedSpriteDC, m_hSprite);
-
-    BitBlt(pBackBuffer->GetBFDC(), iX, iY, iW, iH, s_hSharedSpriteDC, 0, 0, SRCPAINT);
-	//StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iW * (400 / m_iScreenWidth), iH * (400 / m_iScreenHeight), s_hSharedSpriteDC, 0, 0, iW, iH, SRCPAINT);
-	
-    SelectObject(s_hSharedSpriteDC, hOldObj);
-}
-
-void CSprite::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw, int _iScaler)
-{
-	int iW = GetWidth();
-	int iH = GetHeight();
-
-	int iX = m_iX - (iW / 2);
-	int iY = m_iY - (iH / 2);
+	int iX = m_iX - (iWDest / 2);
+	int iY = m_iY - (iHDest / 2);
 
 	CBackBuffer* pBackBuffer = CGame::GetInstance().GetBackBuffer();
 
 	HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hMask);
 
-	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iW * _iScaler, iH * _iScaler, s_hSharedSpriteDC, iW * (_iSpriteIndexToDraw - 1), 0, iW, iH, SRCAND);
+	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iWDest, iHDest, s_hSharedSpriteDC, 0, 0, iWSrc, iHSrc, SRCAND);
 
 	SelectObject(s_hSharedSpriteDC, m_hSprite);
 
-	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iW * _iScaler, iH * _iScaler, s_hSharedSpriteDC, iW * (_iSpriteIndexToDraw - 1), 0, iW, iH, SRCPAINT);
+	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iWDest, iHDest, s_hSharedSpriteDC, 0, 0, iWSrc, iHSrc, SRCPAINT);
+
+	SelectObject(s_hSharedSpriteDC, hOldObj);
+}
+
+void CSprite::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw)
+{
+	int iWSrc = GetWidth() / m_iScale;
+	int iHSrc = GetHeight() / m_iScale;
+
+	int iWDest = GetWidth();
+	int iHDest = GetHeight();
+
+	int iX = m_iX - (iWDest / 2);
+	int iY = m_iY - (iHDest / 2);
+
+	CBackBuffer* pBackBuffer = CGame::GetInstance().GetBackBuffer();
+
+	HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hMask);
+
+	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iWDest, iHDest, s_hSharedSpriteDC, iWSrc * (_iSpriteIndexToDraw - 1), 0, iWSrc, iHSrc, SRCAND);
+
+	SelectObject(s_hSharedSpriteDC, m_hSprite);
+
+	StretchBlt(pBackBuffer->GetBFDC(), iX, iY, iWDest, iHDest, s_hSharedSpriteDC, iWSrc * (_iSpriteIndexToDraw - 1), 0, iWSrc, iHSrc, SRCPAINT);
 
 	SelectObject(s_hSharedSpriteDC, hOldObj);
 }
 
 void CSprite::DrawShader()
 {
-	int iW = GetWidth();
-	int iH = GetHeight();
+	int iWSrc = GetWidth() / m_iScale;
+	int iHSrc = GetHeight() / m_iScale;
 
-	int iX = m_iX - (iW / 2);
-	int iY = m_iY - (iH / 2);
+	int iWDest = GetWidth();
+	int iHDest = GetHeight();
+
+	int iX = m_iX - (iWDest / 2);
+	int iY = m_iY - (iHDest / 2);
 
 	CBackBuffer* pBackBuffer = CGame::GetInstance().GetBackBuffer();
 
@@ -137,7 +147,7 @@ void CSprite::DrawShader()
 	HGDIOBJ hOldObj = SelectObject(s_hSharedSpriteDC, m_hSprite);
 
 
-	StretchBlt(pBackBuffer->GetBFDC(), 0, 0, 960, 540, s_hSharedSpriteDC, 0, 0, iW, iH, SRCAND);
+	StretchBlt(pBackBuffer->GetBFDC(), 0, 0, 960, 540, s_hSharedSpriteDC, 0, 0, iWSrc, iHSrc, SRCAND);
 	//StretchBlt(pBackBuffer->GetBFDC(), -10, -10, 960 + 10, 540 + 10, pBackBuffer->GetBFDC(), 0, 0, 960, 540, SRCINVERT);
 
 	SelectObject(s_hSharedSpriteDC, hOldObj);
@@ -152,13 +162,13 @@ CSprite::Process(float _fDeltaTick)
 int
 CSprite::GetWidth() const
 {
-    return (m_bitmapSprite.bmWidth) / m_iFrames;
+    return (m_bitmapSprite.bmWidth) * m_iScale / m_iFrames;
 }
 
 int
 CSprite::GetHeight() const
 {
-    return (m_bitmapSprite.bmHeight);
+    return (m_bitmapSprite.bmHeight) * m_iScale;
 }
 
 int 

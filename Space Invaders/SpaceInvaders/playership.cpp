@@ -36,12 +36,13 @@ using namespace std::chrono;
 CPlayerShip::CPlayerShip() :
 	m_fFireRate(1),
 	m_fDeltaTimeSinceMoved(0),
-	m_kszMaxLives(3)
+	m_kszMaxLives(3),
+	m_kiSpriteScale(1)
 {
 	m_szLives = m_kszMaxLives;
 
 	m_pSpriteLife = new CSprite();
-	m_pSpriteLife->Initialise(IDB_HEART, IDB_HEARTMASK);
+	m_pSpriteLife->Initialise(IDB_HEART, IDB_HEARTMASK, 1);
 	m_pSpriteLife->SetX(32);
 	m_pSpriteLife->SetY(32);
 }
@@ -55,7 +56,7 @@ CPlayerShip::~CPlayerShip()
 bool
 CPlayerShip::Initialise()
 {
-    VALIDATE(CEntity::Initialise(IDB_PLAYERSHIPSPRITE, IDB_PLAYERSHIPMASK));
+    VALIDATE(CEntity::Initialise(IDB_PLAYERSHIPSPRITE, IDB_PLAYERSHIPMASK, m_kiSpriteScale));
 
     return (true);
 }

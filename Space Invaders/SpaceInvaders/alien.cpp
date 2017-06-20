@@ -37,7 +37,8 @@ float CAlien::s_fMoveAmount = 8;
 const float CAlien::s_kfTimeToMove = 0.2f;
 
 CAlien::CAlien() :
-	m_fDeltaTimeSinceMoved(0)
+	m_fDeltaTimeSinceMoved(0),
+	m_kiSpriteScale(3)
 {
 	s_iAliens++;
 	m_iFrameCount = s_iAliens;
@@ -53,16 +54,16 @@ bool CAlien::Initialise()
 	switch (m_eType)
 	{
 	case JELLYFISH:
-		VALIDATE(CEntity::Initialise(IDB_BITMAP2, IDB_ALIENMASK));
+		VALIDATE(CEntity::Initialise(IDB_BITMAP2, IDB_ALIENMASK, m_kiSpriteScale));
 		break;
 	case SPIDER:
-		VALIDATE(CEntity::Initialise(IDB_BITMAP4, IDB_ALIENMASK));
+		VALIDATE(CEntity::Initialise(IDB_BITMAP4, IDB_ALIENMASK, m_kiSpriteScale));
 		break;
 	case GHOST:
-		VALIDATE(CEntity::Initialise(IDB_BITMAP1, IDB_ALIENMASK));
+		VALIDATE(CEntity::Initialise(IDB_BITMAP1, IDB_ALIENMASK, m_kiSpriteScale));
 		break;
 	case SAUCER:
-		VALIDATE(CEntity::Initialise(IDB_BITMAP3, IDB_ALIENMASK));
+		VALIDATE(CEntity::Initialise(IDB_BITMAP3, IDB_ALIENMASK, m_kiSpriteScale));
 		break;
 	default:
 		break;
@@ -75,7 +76,7 @@ bool CAlien::Initialise()
 void CAlien::Draw()
 {
 	//CEntity::Draw();
-	CEntity::DrawAnimated(2, (m_iFrameCount % 2) + 1, 3);
+	CEntity::DrawAnimated(2, (m_iFrameCount % 2) + 1);
 }
 
 void CAlien::Process(float _fDeltaTick)

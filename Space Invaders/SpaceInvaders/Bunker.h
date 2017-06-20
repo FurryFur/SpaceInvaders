@@ -66,6 +66,7 @@ protected:
 
 	int m_iFrameCount;
 	EBUNKERTYPE m_eType;
+	const int m_kiSpriteScale;
 
 private:
 

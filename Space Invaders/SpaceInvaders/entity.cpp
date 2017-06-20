@@ -42,10 +42,10 @@ CEntity::~CEntity()
 }
 
 bool
-CEntity::Initialise(const int _kiSpriteID, const int _kiMaskID)
+CEntity::Initialise(const int _kiSpriteID, const int _kiMaskID, int _iSpriteScale)
 {
     m_pSprite = new CSprite();
-    VALIDATE(m_pSprite->Initialise(_kiSpriteID, _kiMaskID));
+    VALIDATE(m_pSprite->Initialise(_kiSpriteID, _kiMaskID, _iSpriteScale));
 
     return (true);
 }
@@ -63,9 +63,9 @@ CEntity::DrawShader()
 }
 
 void
-CEntity::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw, int _iScaler)
+CEntity::DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw)
 {
-	m_pSprite->DrawAnimated(_iSpriteIndexes, _iSpriteIndexToDraw, _iScaler);
+	m_pSprite->DrawAnimated(_iSpriteIndexes, _iSpriteIndexToDraw);
 }
 
 void
@@ -94,13 +94,13 @@ CSprite * CEntity::GetSprite()
 	return m_pSprite;
 }
 
-float 
+int 
 CEntity::GetWidth() const
 {
     return (static_cast<float>(m_pSprite->GetWidth()));
 }
 
-float 
+int 
 CEntity::GetHeight() const
 {
     return (static_cast<float>(m_pSprite->GetHeight()));

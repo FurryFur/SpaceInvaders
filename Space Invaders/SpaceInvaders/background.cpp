@@ -42,7 +42,7 @@ CBackGround::~CBackGround()
 bool
 CBackGround::Initialise()
 {
-	VALIDATE(CEntity::Initialise(IDB_BACKGROUND, IDB_BACKGROUNDMASK));
+	VALIDATE(CEntity::Initialise(IDB_BACKGROUND, IDB_BACKGROUNDMASK, 1));
 
 	return (true);
 }

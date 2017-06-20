@@ -34,10 +34,10 @@ public:
     CSprite();
     ~CSprite();
 
-    bool Initialise(int _iResourceID, int _iMaskResourceID);
+    bool Initialise(int _iResourceID, int _iMaskResourceID, int _iScale);
 
     void Draw();
-	void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw, int _iScaler);
+	void DrawAnimated(int _iSpriteIndexes, int _iSpriteIndexToDraw);
 	void DrawShader();
     void Process(float _fDeltaTick);
 	void SetFrames(int _iFrames);
@@ -70,6 +70,7 @@ protected:
 	int m_iScreenWidth;
 	int m_iScreenHeight;
 	int m_iFrames;
+	int m_iScale;
 
     HBITMAP m_hSprite;
     HBITMAP m_hMask;

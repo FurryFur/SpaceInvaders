@@ -62,6 +62,7 @@ protected:
     float m_fVelocityX;
     float m_fVelocityY;
 	bool m_bIsPlayerBullet;
+	const int m_kiSpriteScale;
 
 private:
 

@@ -273,7 +273,7 @@ bool CLevel::OverlapsBullet(const CEntity* _pEntity, const CBullet* _pBullet)
 
 bool CLevel::IsOutsideOfLevel(const CEntity * _pEntity)
 {
-	if (_pEntity->GetX() + _pEntity->GetWidth() >= GetWidth() || _pEntity->GetX() <= 0)
+	if (_pEntity->GetX() + _pEntity->GetWidth() / 2 >= GetWidth() || _pEntity->GetX() - _pEntity->GetWidth() / 2 <= 0)
 	{
 		return true;
 	}
@@ -541,8 +541,8 @@ void CLevel::ProcessAlienBounds(float _fDeltaTick)
 	{
 		for (CAlien* pAlien : m_vecAliens)
 		{
-			if (pAlien->GetX() + pAlien->GetWidth() + CAlien::GetMoveAmount() >= GetWidth()
-				|| pAlien->GetX() + CAlien::GetMoveAmount() <= 0)
+			if (pAlien->GetX() + pAlien->GetWidth() / 2 + CAlien::GetMoveAmount() >= GetWidth()
+			 || pAlien->GetX() - pAlien->GetWidth() / 2 + CAlien::GetMoveAmount() <= 0)
 			{
 				CAlien::ChangeMovementDirection();
 			}
