@@ -317,7 +317,8 @@ void CLevel::ProcessBulletPlayerShipCollision()
 			// Go to game over screen if the player is dead
 			if (m_pPlayerShip->GetLives() <= 0)
 			{
-
+				// TODO: Game over screen and high score
+				CGame::GetInstance().SetLevel(CGame::ELEVEL::MENU);
 			}
 			else
 			{
@@ -339,7 +340,7 @@ void CLevel::ProcessBulletPlayerShipCollision()
 						iDirToggle *= -1;
 						m_pPlayerShip->SetX((m_pPlayerShip->GetX() + 2 * m_pPlayerShip->GetWidth() * iDirToggle));
 					}
-				}	
+				}
 			}
 
 			// Destroy the alien bullet
