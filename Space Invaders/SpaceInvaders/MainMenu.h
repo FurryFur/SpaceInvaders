@@ -32,6 +32,7 @@ private:
 	CMainMenu();
 	CMainMenu(const CMainMenu& _kr);
 	CMainMenu& operator= (const CMainMenu& _kr);
+	void DrawScore();
 
 protected:
 	int m_iWidth;

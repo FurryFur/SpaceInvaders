@@ -1,4 +1,7 @@
+#include <string>
 #include "MainMenu.h"
+#include "game.h"
+#include "Backbuffer.h"
 
 int iButtonOffset = 100;
 
@@ -10,6 +13,19 @@ CMainMenu::CMainMenu():
 m_bClickToHandle(false),
 m_bClickReleaseToHandle(false)
 {
+}
+
+void CMainMenu::DrawScore()
+{
+	std::string blarg = "High Score";
+	HDC hdc = CGame::GetInstance().GetBackBuffer()->GetBFDC();
+	SetTextColor(hdc, RGB(255, 255, 255));
+
+	const int kiX = m_iWidth/5;
+	const int kiY = m_iHeight/10;
+	SetBkMode(hdc, TRANSPARENT);
+
+	TextOutA(hdc, kiX, kiY, blarg.c_str(), static_cast<int>(blarg.size()));
 }
 
 
@@ -67,6 +83,11 @@ void CMainMenu::Draw()
 	for (CMenuButton* pmenButton : m_pvecMenuButtons)
 	{
 		pmenButton->Draw();
+	}
+
+	if (m_pvecMenuButtons.at(3)->GetIsActive())
+	{
+		DrawScore();
 	}
 }
 
